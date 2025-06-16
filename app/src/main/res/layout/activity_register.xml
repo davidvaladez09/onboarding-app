@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".presentation.RegisterActivity">
+
+    <include layout="@layout/toolbar_custom"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/common_padding_16dp_default"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingVertical="16dp"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_margin="@dimen/common_padding_16dp_default">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="64dp"
+                android:layout_marginBottom="64dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/register_new_account"
+                    android:textSize="24sp"
+                    android:layout_marginTop="@dimen/common_padding_16dp_default"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:minHeight="56dp"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_drive_file_rename"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:cornerRadius="@dimen/common_border_radius_8dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="56dp"
+                    android:paddingVertical="@dimen/common_padding_16dp_default"
+                    android:paddingHorizontal="12dp"
+                    android:hint="@string/name"
+                    android:minWidth="120dp"
+                    android:inputType="textPersonName"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilEmailRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:minHeight="56dp"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_email"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:cornerRadius="@dimen/common_border_radius_8dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etEmailRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="56dp"
+                    android:paddingVertical="@dimen/common_padding_16dp_default"
+                    android:paddingHorizontal="12dp"
+                    android:hint="@string/email"
+                    android:minWidth="120dp"
+                    android:inputType="textEmailAddress"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilPasswordRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_padding_16dp_default"
+                android:minHeight="56dp"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_remove_red_eye"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:cornerRadius="@dimen/common_border_radius_8dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPasswordRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="56dp"
+                    android:paddingVertical="@dimen/common_padding_16dp_default"
+                    android:paddingHorizontal="12dp"
+                    android:hint="@string/password"
+                    android:minWidth="120dp"
+                    android:inputType="textPassword"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilConfirmPasswordRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_padding_16dp_default"
+                android:minHeight="56dp"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_remove_red_eye"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:cornerRadius="@dimen/common_border_radius_8dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etConfirmPasswordRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="56dp"
+                    android:paddingVertical="@dimen/common_padding_16dp_default"
+                    android:paddingHorizontal="12dp"
+                    android:hint="@string/confirm_password"
+                    android:minWidth="120dp"
+                    android:inputType="textPassword"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/registerButton"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/common_height_button_70dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp"
+                android:backgroundTint="@color/green"
+                android:text="@string/register"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:cornerRadius="6dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:strokeColor="@color/green"
+                app:strokeWidth="10dp"/>
+        </LinearLayout>
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

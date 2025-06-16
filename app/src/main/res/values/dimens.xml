@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="common_padding_16dp_default">16dp</dimen>
+    <dimen name="common_height_button_70dp">70dp</dimen>
+    <dimen name="common_border_radius_8dp">8dp</dimen>
+</resources>

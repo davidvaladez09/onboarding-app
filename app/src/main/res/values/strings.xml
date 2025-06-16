@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">onboarding</string>
+    <string name="hello_world">Hello World</string>
+    <string name="name">Name</string>
+    <string name="last_name">Apellido</string>
+    <string name="birthday_date">Birthday Date</string>
+    <string name="user">User</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="register_new_account">Register new account</string>
+    <string name="address">Address</string>
+    <string name="email">Email</string>
+    <string name="phone_number">Phone number</string>
+    <string name="hobbies">Hobbies</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="create_account">Crear una cuenta</string>
+    <string name="error_invalid_email">Formato de email inválido</string>
+    <string name="error_password_length">La contraseña debe tener al menos 6 caracteres</string>
+    <string name="back">Back</string>
+    <string name="optional">Optional</string>
+    <string name="registration_success">Registration Success</string>
+    <string name="error_name_required">Nombre requerido</string>
+    <string name="error_email_required">error_email_required</string>
+    <string name="error_password_required">error_password_required</string>
+    <string name="error_confirm_password_required">error_confirm_password_required</string>
+    <string name="error_password_mismatch">Las contraseñas no coinciden</string>
+    <string name="title_list">List</string>
+    <string name="title_home">Home</string>
+    <string name="title_service">Service</string>
+</resources>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".RegisterActivity">
+
+    <include layout="@layout/toolbar_custom"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/common_padding_16dp_default"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingVertical="16dp"
+            android:layout_margin="@dimen/common_padding_16dp_default">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="24dp">
+
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/ic_add_a_photo"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="fitCenter"/>
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilNameHome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:minHeight="56dp"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_drive_file_rename"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:cornerRadius="@dimen/common_border_radius_8dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etNameHome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="56dp"
+                    android:paddingVertical="@dimen/common_padding_16dp_default"
+                    android:paddingHorizontal="12dp"
+                    android:hint="@string/name"
+                    android:minWidth="120dp"
+                    android:inputType="textPersonName"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@id/etBirthDate"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilBirthDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:minHeight="56dp"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_calendar_month"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:cornerRadius="@dimen/common_border_radius_8dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etBirthDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="56dp"
+                    android:paddingVertical="@dimen/common_padding_16dp_default"
+                    android:paddingHorizontal="12dp"
+                    android:hint="@string/birthday_date"
+                    android:minWidth="120dp"
+                    android:inputType="none"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:cursorVisible="false"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@id/etAddress"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:minHeight="56dp"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_add_home"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:cornerRadius="@dimen/common_border_radius_8dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="56dp"
+                    android:paddingVertical="@dimen/common_padding_16dp_default"
+                    android:paddingHorizontal="12dp"
+                    android:hint="@string/address"
+                    android:minWidth="120dp"
+                    android:inputType="textEmailAddress"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@id/etPhoneNumber"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_padding_16dp_default"
+                android:minHeight="56dp"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_local_phone"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:cornerRadius="@dimen/common_border_radius_8dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPhoneNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="56dp"
+                    android:paddingVertical="@dimen/common_padding_16dp_default"
+                    android:paddingHorizontal="12dp"
+                    android:hint="@string/phone_number"
+                    android:minWidth="120dp"
+                    android:inputType="textPassword"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@id/etHobbies"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilHobbies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_padding_16dp_default"
+                android:minHeight="56dp"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_hobbies"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:cornerRadius="@dimen/common_border_radius_8dp"
+                app:helperText="@string/optional"
+                app:counterEnabled="true"
+                app:counterMaxLength="@integer/hobbies_max_length">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etHobbies"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="56dp"
+                    android:paddingVertical="@dimen/common_padding_16dp_default"
+                    android:paddingHorizontal="12dp"
+                    android:hint="@string/hobbies"
+                    android:minWidth="120dp"
+                    android:inputType="textMultiLine"
+                    android:maxLength="@integer/hobbies_max_length"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/registerButton"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/common_height_button_70dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp"
+                android:backgroundTint="@color/green"
+                android:text="@string/register"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:cornerRadius="6dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:strokeColor="@color/green"
+                app:strokeWidth="10dp"/>
+        </LinearLayout>
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
