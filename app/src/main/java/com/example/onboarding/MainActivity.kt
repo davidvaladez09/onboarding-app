@@ -1,32 +1,45 @@
-package com.example.onboarding.presentation
+package com.example.onboarding
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
-import com.example.onboarding.R
-import com.example.onboarding.databinding.ActivityMainBinding
+import android.os.Handler
+import android.os.Looper
+import android.view.Menu
+import androidx.activity.ComponentActivity
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.onboarding.presentation.LoginActivity
+import com.example.onboarding.ui.theme.OnboardingTheme
 
-class MainActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var navController: NavController
-
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_splash)
 
-        // Configurar navegación
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
+        Handler(Looper.getMainLooper()).postDelayed({
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }, 2000)
+    }
+}
 
-        // Configurar barra de navegación inferior
-        binding.bottomNavigation.setupWithNavController(navController)
+@Composable
+fun Greeting(name: String, modifier: Modifier = Modifier) {
+    Text(
+        text = "Hello $name!",
+        modifier = modifier
+    )
+}
 
-        // Seleccionar Home por defecto
-        navController.navigate(R.id.homeFragment)
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    OnboardingTheme {
+        Greeting("Android")
     }
 }

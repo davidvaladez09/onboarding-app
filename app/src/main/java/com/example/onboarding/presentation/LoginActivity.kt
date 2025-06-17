@@ -33,14 +33,17 @@ class LoginActivity : AppCompatActivity() {
 
     @Suppress("DEPRECATION")
     private fun navigateToHome() {
-        // CORRECCIÓN: Navegar a MainActivity, no a HomeFragment
-        val intent = Intent(this, MainActivity::class.java)
-
-        // Opcional: Limpiar pila de actividades
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-
+        val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-        finish()  // Cerrar LoginActivity
     }
+
+    /*
+    @Suppress("DEPRECATION")
+    private fun navigateToHome() {
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+    }
+     */
 }
