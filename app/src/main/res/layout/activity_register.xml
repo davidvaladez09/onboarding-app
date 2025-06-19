@@ -94,8 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/common_padding_16dp_default"
                 android:minHeight="56dp"
-                app:endIconMode="custom"
-                app:endIconDrawable="@drawable/ic_remove_red_eye"
+                app:endIconMode="password_toggle"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:cornerRadius="@dimen/common_border_radius_8dp">
 
@@ -117,8 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/common_padding_16dp_default"
                 android:minHeight="56dp"
-                app:endIconMode="custom"
-                app:endIconDrawable="@drawable/ic_remove_red_eye"
+                app:endIconMode="password_toggle"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:cornerRadius="@dimen/common_border_radius_8dp">
 
