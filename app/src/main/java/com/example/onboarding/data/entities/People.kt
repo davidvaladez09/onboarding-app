@@ -22,5 +22,8 @@ data class People(
     val phoneNumber: String,
 
     @ColumnInfo(name = "hobbies")
-    val hobbies: String?
+    val hobbies: String?,
+
+    @ColumnInfo(name = "image_path")
+    val imagePath: String? = null
 )
