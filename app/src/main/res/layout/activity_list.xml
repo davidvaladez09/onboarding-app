@@ -5,48 +5,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".presentation.RegisterActivity">
+    tools:context=".presentation.ListActivity">
 
     <include layout="@layout/toolbar_custom"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPeople"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="@dimen/common_padding_16dp_default"
-        android:clipToPadding="false"
-        android:layout_marginTop="90dp"
-        android:layout_marginBottom="?attr/actionBarSize"/>
+        android:orientation="vertical"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_marginBottom="?attr/actionBarSize">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingHorizontal="@dimen/common_padding_16dp_default"
-        android:fillViewport="true"
-        tools:context=".MainActivity">
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/tvTotalPeople"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="24dp">
+            android:padding="16dp"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:gravity="center"
+            tools:text="Total 6 people"/>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPeople"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingHorizontal="@dimen/common_padding_16dp_default"
+            android:clipToPadding="false"/>
 
-            <TextView
-                android:id="@+id/tvTotalPeople"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/common_padding_16dp_default"
-                android:padding="16dp"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                tools:text="Total 6 people"/>
-
-
-        </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
     <include
         android:id="@+id/bottom_navigation"

@@ -1,27 +1,48 @@
 package com.example.onboarding.presentation
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.example.onboarding.R
 import com.example.onboarding.data.database.AppDatabase
 import com.example.onboarding.data.entities.People
 import com.example.onboarding.data.repositories.PeopleRepository
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class HomeActivity : BaseBottomNavActivity() {
 
@@ -37,8 +58,56 @@ class HomeActivity : BaseBottomNavActivity() {
     private lateinit var etPhoneNumber: TextInputEditText
     private lateinit var etHobbies: TextInputEditText
     private lateinit var btnRegister: MaterialButton
+    private lateinit var ivProfile: ImageView
 
     private lateinit var peopleRepository: PeopleRepository
+    private var currentPhotoPath: String? = null
+    private var hasPhoto = false
+
+    private val takePictureResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val bitmap = BitmapFactory.decodeFile(currentPhotoPath)
+            if (bitmap != null) {
+                ivProfile.setImageBitmap(bitmap)
+                hasPhoto = true
+            } else {
+                Toast.makeText(this, getString(R.string.error_loading_image), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private val pickImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.data?.let { uri ->
+                currentPhotoPath = saveImageFromUri(uri)
+                if (currentPhotoPath != null) {
+                    val bitmap = BitmapFactory.decodeFile(currentPhotoPath)
+                    ivProfile.setImageBitmap(bitmap)
+                    hasPhoto = true
+                } else {
+                    Toast.makeText(this, getString(R.string.error_saving_image), Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            if (checkCameraPermission()) {
+                dispatchTakePictureIntent()
+            } else if (checkStoragePermission()) {
+                dispatchPickImageIntent()
+            }
+        } else {
+            Toast.makeText(
+                this,
+                getString(R.string.permission_required),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +124,7 @@ class HomeActivity : BaseBottomNavActivity() {
         setupBottomNavigation()
         setupToolbar()
         setupViews()
+        setupProfileImage()
         setupPhoneNumberFormatting()
         setupDatePicker()
         setupRegisterButton()
@@ -101,6 +171,13 @@ class HomeActivity : BaseBottomNavActivity() {
         etPhoneNumber = findViewById(R.id.etPhoneNumber)
         etHobbies = findViewById(R.id.etHobbies)
         btnRegister = findViewById(R.id.registerButton)
+        ivProfile = findViewById(R.id.ivProfile)
+    }
+
+    private fun setupProfileImage() {
+        ivProfile.setOnClickListener {
+            showImageSourceDialog()
+        }
     }
 
     private fun setupRegisterButton() {
@@ -109,6 +186,7 @@ class HomeActivity : BaseBottomNavActivity() {
         }
     }
 
+    @SuppressLint("DefaultLocale")
     private fun setupDatePicker() {
         etBirthDate.setOnClickListener {
             val calendar = Calendar.getInstance()
@@ -142,7 +220,7 @@ class HomeActivity : BaseBottomNavActivity() {
 
                 isFormatting = true
 
-                val digits = s.toString().replace("[^\\d]".toRegex(), "")
+                val digits = s.toString().replace("\\D".toRegex(), "")
 
                 val formatted = when {
                     digits.length <= 3 -> digits
@@ -155,6 +233,174 @@ class HomeActivity : BaseBottomNavActivity() {
                 isFormatting = false
             }
         })
+    }
+
+    private fun showImageSourceDialog() {
+        val options = arrayOf(
+            getString(R.string.take_photo),
+            getString(R.string.choose_from_gallery),
+            if (hasPhoto) getString(R.string.remove_photo) else null
+        ).filterNotNull()
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.select_image_source)
+            .setItems(options.toTypedArray()) { _, which ->
+                when (options[which]) {
+                    getString(R.string.take_photo) -> takePhoto()
+                    getString(R.string.choose_from_gallery) -> pickFromGallery()
+                    getString(R.string.remove_photo) -> removePhoto()
+                }
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
+    }
+
+    private fun takePhoto() {
+        if (checkCameraPermission()) {
+            dispatchTakePictureIntent()
+        } else {
+            requestCameraPermission()
+        }
+    }
+
+    private fun pickFromGallery() {
+        if (checkStoragePermission()) {
+            dispatchPickImageIntent()
+        } else {
+            requestStoragePermission()
+        }
+    }
+
+    private fun removePhoto() {
+        currentPhotoPath = null
+        hasPhoto = false
+        ivProfile.setImageResource(R.drawable.ic_add_a_photo)
+    }
+
+    private fun checkCameraPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun checkStoragePermission(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_MEDIA_IMAGES
+            ) == PackageManager.PERMISSION_GRANTED
+        } else {
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        }
+    }
+
+    private fun requestCameraPermission() {
+        requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+    }
+
+    private fun requestStoragePermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES)
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_msys", Locale.getDefault()).format(Date())
+        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_",
+            ".jpg",
+            storageDir
+        ).apply {
+            currentPhotoPath = absolutePath
+        }
+    }
+
+    @SuppressLint("QueryPermissionsNeeded")
+    private fun dispatchTakePictureIntent() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+        val activities = packageManager.queryIntentActivities(takePictureIntent, 0)
+        val isIntentSafe = activities.isNotEmpty()
+
+        if (!isIntentSafe) {
+            showNoCameraDialog()
+            return
+        }
+
+        try {
+            val photoFile = createImageFile()
+            currentPhotoPath = photoFile.absolutePath
+
+            val photoURI: Uri = FileProvider.getUriForFile(
+                this,
+                "${packageName}.provider",
+                photoFile
+            )
+
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+
+            if (takePictureIntent.resolveActivity(packageManager) != null) {
+                takePictureResult.launch(takePictureIntent)
+            } else {
+                showNoCameraDialog()
+            }
+        } catch (ex: IOException) {
+            Log.e("Camera", "Error creating image file", ex)
+            Toast.makeText(this, getString(R.string.error_creating_file), Toast.LENGTH_SHORT).show()
+        } catch (ex: SecurityException) {
+            Log.e("Camera", "Security exception", ex)
+            Toast.makeText(this, getString(R.string.permission_denied_camera), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showNoCameraDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.no_camera_title))
+            .setMessage(getString(R.string.no_camera_message))
+            .setPositiveButton(getString(R.string.choose_from_gallery)) { _, _ ->
+                pickFromGallery()
+            }
+            .setNegativeButton(getString(R.string.cancel), null)
+            .show()
+    }
+
+    @SuppressLint("IntentReset")
+    private fun dispatchPickImageIntent() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        intent.type = "image/*"
+        pickImageResult.launch(intent)
+    }
+
+    private fun saveImageFromUri(uri: Uri): String? {
+        return try {
+            val inputStream = contentResolver.openInputStream(uri)
+            val timeStamp = SimpleDateFormat("yyyyMMdd_msys", Locale.getDefault()).format(Date())
+            val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            val imageFile = File(storageDir, "SELECTED_$timeStamp.jpg")
+
+            inputStream?.use { input ->
+                FileOutputStream(imageFile).use { output ->
+                    input.copyTo(output)
+                }
+            }
+            imageFile.absolutePath
+        } catch (e: IOException) {
+            Log.e("HomeActivity", "Error saving image from URI", e)
+            Toast.makeText(this, getString(R.string.error_saving_image), Toast.LENGTH_SHORT).show()
+            null
+        } catch (e: SecurityException) {
+            Log.e("HomeActivity", "Security exception when saving image", e)
+            Toast.makeText(this, getString(R.string.permission_required), Toast.LENGTH_SHORT).show()
+            null
+        }
     }
 
     private fun registerPerson() {
@@ -177,6 +423,9 @@ class HomeActivity : BaseBottomNavActivity() {
 
         if (birthDate.isEmpty()) {
             tilBirthDate.error = getString(R.string.error_birthdate_required)
+            isValid = false
+        } else if (!birthDate.matches(Regex("\\d{2}/\\d{2}/\\d{4}"))) {
+            tilBirthDate.error = getString(R.string.error_date_format)
             isValid = false
         }
 
@@ -202,7 +451,8 @@ class HomeActivity : BaseBottomNavActivity() {
             birthDate = birthDate,
             address = address,
             phoneNumber = phoneNumber,
-            hobbies = if (hobbies.isEmpty()) null else hobbies
+            hobbies = hobbies.ifEmpty { null },
+            imagePath = currentPhotoPath
         )
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -230,7 +480,7 @@ class HomeActivity : BaseBottomNavActivity() {
                 runOnUiThread {
                     Toast.makeText(
                         this@HomeActivity,
-                        getString(R.string.error_registration, e.message),
+                        getString(R.string.error_registration, e.localizedMessage),
                         Toast.LENGTH_SHORT
                     ).show()
                     btnRegister.isEnabled = true
@@ -245,6 +495,7 @@ class HomeActivity : BaseBottomNavActivity() {
         etAddress.text?.clear()
         etPhoneNumber.text?.clear()
         etHobbies.text?.clear()
+        removePhoto()
     }
 
     @Suppress("DEPRECATION")

@@ -1,21 +1,26 @@
 package com.example.onboarding.presentation
 
+import android.content.Context
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.onboarding.R
 import com.example.onboarding.data.entities.People
-import java.time.LocalDate
-import java.time.Period
-import java.time.format.DateTimeFormatter
+import java.io.File
 
-class PeopleAdapter(private val people: List<People>) : RecyclerView.Adapter<PeopleAdapter.PeopleViewHolder>() {
+class PeopleAdapter(
+    private val people: List<People>,
+    private val context: Context
+) : RecyclerView.Adapter<PeopleAdapter.PeopleViewHolder>() {
 
     inner class PeopleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvName: TextView = itemView.findViewById(R.id.tvName)
         val tvAge: TextView = itemView.findViewById(R.id.tvAge)
+        val ivProfileImage: ImageView = itemView.findViewById(R.id.ivProfileImage)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeopleViewHolder {
@@ -27,19 +32,38 @@ class PeopleAdapter(private val people: List<People>) : RecyclerView.Adapter<Peo
         val person = people[position]
         holder.tvName.text = person.name
         holder.tvAge.text = calculateAge(person.birthDate)
+
+        if (!person.imagePath.isNullOrEmpty()) {
+            val file = File(person.imagePath)
+            if (file.exists()) {
+                val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+                holder.ivProfileImage.setImageBitmap(bitmap)
+            } else {
+                holder.ivProfileImage.setImageResource(R.drawable.ic_insert_photo)
+            }
+        } else {
+            holder.ivProfileImage.setImageResource(R.drawable.ic_insert_photo)
+        }
     }
 
     override fun getItemCount() = people.size
 
     private fun calculateAge(birthDate: String): String {
         return try {
-            val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-            val birthDateObj = LocalDate.parse(birthDate, formatter)
-            val today = LocalDate.now()
-            val period = Period.between(birthDateObj, today)
-            "${period.years} years"
+            val dateFormat = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault())
+            val birthDay = dateFormat.parse(birthDate)
+            val today = java.util.Calendar.getInstance()
+            val birthCalendar = java.util.Calendar.getInstance().apply { time = birthDay!! }
+
+            var age = today.get(java.util.Calendar.YEAR) - birthCalendar.get(java.util.Calendar.YEAR)
+
+            if (today.get(java.util.Calendar.DAY_OF_YEAR) < birthCalendar.get(java.util.Calendar.DAY_OF_YEAR)) {
+                age--
+            }
+
+            "$age años"
         } catch (e: Exception) {
-            "Age not available"
+            "Edad no disponible"
         }
     }
 }

@@ -57,8 +57,9 @@
                     android:layout_height="wrap_content"
                     android:text="@string/tap_to_add_photo"
                     android:textSize="14sp"
-                    android:textColor="@color/gray"/>
+                    android:textColor="@color/black"/>
             </LinearLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilNameHome"
                 android:layout_width="match_parent"

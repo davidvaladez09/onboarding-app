@@ -58,7 +58,7 @@ class ListActivity : BaseBottomNavActivity() {
     private fun setupRecyclerView(people: List<People>) {
         val recyclerView = findViewById<RecyclerView>(R.id.rvPeople)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = PeopleAdapter(people)
+        recyclerView.adapter = PeopleAdapter(people, this)
     }
 
     private fun setupToolbar() {

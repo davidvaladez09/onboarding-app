@@ -44,6 +44,22 @@
     <string name="profile_image">Profile image</string>
     <string name="tap_to_add_photo">Tap to add photo</string>
 
+    <string name="select_image_source">select image source</string>
+    <string name="take_photo">Take picture</string>
+    <string name="choose_from_gallery">Choose from gallery</string>
+    <string name="remove_photo">Remove picture</string>
+    <string name="cancel">Cancel</string>
+    <string name="permission_required">Permission required</string>
+    <string name="error_loading_image">Error loading image</string>
+    <string name="error_saving_image">Error saving image</string>
+    <string name="error_creating_file">Error creating file</string>
+    <string name="no_camera_app">No camera app</string>
+    <string name="error_date_format">Error date format (dd/MM/yyyy)</string>
+
+    <string name="no_camera_title">Sin aplicación de cámara</string>
+    <string name="no_camera_message">No se encontró una aplicación de cámara. ¿Desea seleccionar una imagen de la galería?</string>
+    <string name="permission_denied_camera">Permiso denegado para acceder a la cámara</string>
+
     <plurals name="total_people">
         <item quantity="one">Total %d person</item>
         <item quantity="other">Total %d people</item>

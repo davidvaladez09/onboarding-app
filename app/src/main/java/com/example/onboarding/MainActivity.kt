@@ -36,7 +36,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     )
 }
 
-@Preview(showBackground = false)
+@Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     OnboardingTheme {
