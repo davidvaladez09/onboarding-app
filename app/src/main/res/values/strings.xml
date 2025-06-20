@@ -30,4 +30,8 @@
     <string name="title_home">Home</string>
     <string name="title_service">Service</string>
     <string name="add_people">Add people</string>
+    <string name="registering_user">Registrando usuario...</string>
+    <string name="error_registration">Error al registrar: %s</string>
+    <string name="error_email_exists">This email is already registered</string>
+    <string name="registration_failed">Registration failed. Please try again</string>
 </resources>

@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
+// import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.onboarding.R
 import com.example.onboarding.databinding.BottomNavigationBinding

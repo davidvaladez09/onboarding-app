@@ -66,6 +66,7 @@ class HomeActivity : BaseBottomNavActivity() {
         }
     }
 
+    @Suppress("DEPRECATION")
     private fun navigateToLogin() {
         val intent = Intent(this, LoginActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK

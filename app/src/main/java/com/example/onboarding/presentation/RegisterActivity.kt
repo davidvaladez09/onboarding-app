@@ -4,13 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.onboarding.R
+import com.example.onboarding.data.database.AppDatabase
+import com.example.onboarding.data.repositories.UserRepository
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -25,6 +31,8 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var etConfirmPassword: TextInputEditText
     private lateinit var btnRegister: MaterialButton
 
+    private lateinit var repository: UserRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,6 +43,54 @@ class RegisterActivity : AppCompatActivity() {
         setupToolbar()
         initViews()
         setupListeners()
+
+        val database = AppDatabase.getDatabase(this)
+        repository = UserRepository(database.userDao())
+    }
+
+    private fun performRegistration(name: String, email: String, password: String) {
+        findViewById<ProgressBar>(R.id.progressBar).visibility = View.VISIBLE
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                if (repository.emailExists(email)) {
+                    runOnUiThread {
+                        tilEmail.error = getString(R.string.error_email_exists)
+                        findViewById<ProgressBar>(R.id.progressBar).visibility = View.GONE
+                    }
+                    return@launch
+                }
+
+                val userId = repository.registerUser(name, email, password)
+
+                runOnUiThread {
+                    findViewById<ProgressBar>(R.id.progressBar).visibility = View.GONE
+                    if (userId > 0) {
+                        Toast.makeText(
+                            this@RegisterActivity,
+                            R.string.registration_success,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        navigateToLogin()
+                    } else {
+                        Toast.makeText(
+                            this@RegisterActivity,
+                            R.string.registration_failed,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            } catch (e: Exception) {
+                runOnUiThread {
+                    findViewById<ProgressBar>(R.id.progressBar).visibility = View.GONE
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        "Error: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
     }
 
     private fun setupToolbar() {
@@ -115,11 +171,7 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun performRegistration(name: String, email: String, password: String) {
-        Toast.makeText(this, R.string.registration_success, Toast.LENGTH_SHORT).show()
-        navigateToLogin()
-    }
-
+    @Suppress("DEPRECATION")
     private fun navigateToLogin() {
         val intent = Intent(this, LoginActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
