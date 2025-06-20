@@ -10,6 +10,7 @@ import com.example.onboarding.R
 import com.example.onboarding.data.database.AppDatabase
 import com.example.onboarding.data.entities.User
 import com.example.onboarding.data.repositories.UserRepository
+import com.example.onboarding.data.utils.PasswordUtils
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -52,11 +53,24 @@ class LoginActivity : AppCompatActivity() {
 
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    val user = repository.getUserByCredentials(email, password)
+                    val user = repository.getUserByEmail(email)
 
                     runOnUiThread {
                         if (user != null) {
-                            navigateToHome()
+                            val hashedInput = PasswordUtils.hashPassword(
+                                password,
+                                PasswordUtils.hexToBytes(user.salt)
+                            )
+
+                            if (PasswordUtils.bytesToHex(hashedInput) == user.password) {
+                                navigateToHome()
+                            } else {
+                                Toast.makeText(
+                                    this@LoginActivity,
+                                    "Incorrect email or password",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         } else {
                             Toast.makeText(
                                 this@LoginActivity,
@@ -66,13 +80,7 @@ class LoginActivity : AppCompatActivity() {
                         }
                     }
                 } catch (e: Exception) {
-                    runOnUiThread {
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "Error validating credentials: ${e.message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                    e.message
                 }
             }
         }
@@ -81,21 +89,23 @@ class LoginActivity : AppCompatActivity() {
     private fun addTestUser() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val testUser = User(
-                    username = "test_user",
-                    password = "123456",
-                    email = "test@example.com"
-                )
+                val testEmail = "test@example.com"
+                if (repository.getUserByEmail(testEmail) == null) {
+                    val testPassword = "123456"
+                    val salt = PasswordUtils.generateSalt()
+                    val hashedPassword = PasswordUtils.hashPassword(testPassword, salt)
 
-                val existingUser = repository.getUserByEmail(testUser.email)
-                if (existingUser == null) {
+                    val testUser = User(
+                        username = "test_user",
+                        email = testEmail,
+                        password = PasswordUtils.bytesToHex(hashedPassword),
+                        salt = PasswordUtils.bytesToHex(salt)
+                    )
+
                     repository.insertUser(testUser)
-
-                } else {
-                    Log.d(tag, "Test user already exists: ${testUser.email}")
                 }
             } catch (e: Exception) {
-                Log.e(tag, "Error adding test user: ${e.message}", e)
+                Log.e(tag, "Error adding test user", e)
             }
         }
     }
