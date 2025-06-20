@@ -9,12 +9,37 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import com.example.onboarding.R
+import com.example.onboarding.data.database.AppDatabase
+import com.example.onboarding.data.entities.People
+import com.example.onboarding.data.repositories.PeopleRepository
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class HomeActivity : BaseBottomNavActivity() {
+
+    private lateinit var tilName: TextInputLayout
+    private lateinit var tilBirthDate: TextInputLayout
+    private lateinit var tilAddress: TextInputLayout
+    private lateinit var tilPhoneNumber: TextInputLayout
+    private lateinit var tilHobbies: TextInputLayout
+
+    private lateinit var etName: TextInputEditText
+    private lateinit var etBirthDate: TextInputEditText
+    private lateinit var etAddress: TextInputEditText
+    private lateinit var etPhoneNumber: TextInputEditText
+    private lateinit var etHobbies: TextInputEditText
+    private lateinit var btnRegister: MaterialButton
+
+    private lateinit var peopleRepository: PeopleRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -24,12 +49,31 @@ class HomeActivity : BaseBottomNavActivity() {
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
+        val database = AppDatabase.getDatabase(this)
+        peopleRepository = PeopleRepository(database.peopleDao())
+
         setupBottomNavigation()
         setupToolbar()
+        setupViews()
         setupPhoneNumberFormatting()
         setupDatePicker()
+        setupRegisterButton()
 
         findViewById<BottomNavigationView>(R.id.bottom_navigation).selectedItemId = R.id.nav_home
+    }
+
+    override fun setupBottomNavigation() {
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> true
+                R.id.nav_list -> {
+                    startActivity(Intent(this, ListActivity::class.java))
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun setupToolbar() {
@@ -44,9 +88,28 @@ class HomeActivity : BaseBottomNavActivity() {
         }
     }
 
-    private fun setupDatePicker() {
-        val etBirthDate = findViewById<TextInputEditText>(R.id.etBirthDate)
+    private fun setupViews() {
+        tilName = findViewById(R.id.tilNameHome)
+        tilBirthDate = findViewById(R.id.tilBirthDate)
+        tilAddress = findViewById(R.id.tilAddress)
+        tilPhoneNumber = findViewById(R.id.tilPhoneNumber)
+        tilHobbies = findViewById(R.id.tilHobbies)
 
+        etName = findViewById(R.id.etNameHome)
+        etBirthDate = findViewById(R.id.etBirthDate)
+        etAddress = findViewById(R.id.etAddress)
+        etPhoneNumber = findViewById(R.id.etPhoneNumber)
+        etHobbies = findViewById(R.id.etHobbies)
+        btnRegister = findViewById(R.id.registerButton)
+    }
+
+    private fun setupRegisterButton() {
+        btnRegister.setOnClickListener {
+            registerPerson()
+        }
+    }
+
+    private fun setupDatePicker() {
         etBirthDate.setOnClickListener {
             val calendar = Calendar.getInstance()
             val year = calendar.get(Calendar.YEAR)
@@ -66,19 +129,7 @@ class HomeActivity : BaseBottomNavActivity() {
         }
     }
 
-    @Suppress("DEPRECATION")
-    private fun navigateToLogin() {
-        val intent = Intent(this, LoginActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-        }
-        startActivity(intent)
-        finish()
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-    }
-
     private fun setupPhoneNumberFormatting() {
-        val etPhoneNumber = findViewById<TextInputEditText>(R.id.etPhoneNumber)
-
         etPhoneNumber.addTextChangedListener(object : TextWatcher {
             private var isFormatting = false
 
@@ -104,5 +155,105 @@ class HomeActivity : BaseBottomNavActivity() {
                 isFormatting = false
             }
         })
+    }
+
+    private fun registerPerson() {
+        val name = etName.text.toString().trim()
+        val birthDate = etBirthDate.text.toString().trim()
+        val address = etAddress.text.toString().trim()
+        val phoneNumber = etPhoneNumber.text.toString().replace("-", "")
+        val hobbies = etHobbies.text.toString().trim()
+
+        var isValid = true
+        tilName.error = null
+        tilBirthDate.error = null
+        tilAddress.error = null
+        tilPhoneNumber.error = null
+
+        if (name.isEmpty()) {
+            tilName.error = getString(R.string.error_name_required)
+            isValid = false
+        }
+
+        if (birthDate.isEmpty()) {
+            tilBirthDate.error = getString(R.string.error_birthdate_required)
+            isValid = false
+        }
+
+        if (address.isEmpty()) {
+            tilAddress.error = getString(R.string.error_address_required)
+            isValid = false
+        }
+
+        if (phoneNumber.isEmpty()) {
+            tilPhoneNumber.error = getString(R.string.error_phone_required)
+            isValid = false
+        } else if (phoneNumber.length < 10) {
+            tilPhoneNumber.error = getString(R.string.error_phone_invalid)
+            isValid = false
+        }
+
+        if (!isValid) return
+
+        btnRegister.isEnabled = false
+
+        val people = People(
+            name = name,
+            birthDate = birthDate,
+            address = address,
+            phoneNumber = phoneNumber,
+            hobbies = if (hobbies.isEmpty()) null else hobbies
+        )
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val personId = peopleRepository.insertPeople(people)
+
+                runOnUiThread {
+                    if (personId > 0L) {
+                        Toast.makeText(
+                            this@HomeActivity,
+                            getString(R.string.person_registered_success),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        clearForm()
+                    } else {
+                        Toast.makeText(
+                            this@HomeActivity,
+                            getString(R.string.registration_failed),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    btnRegister.isEnabled = true
+                }
+            } catch (e: Exception) {
+                runOnUiThread {
+                    Toast.makeText(
+                        this@HomeActivity,
+                        getString(R.string.error_registration, e.message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    btnRegister.isEnabled = true
+                }
+            }
+        }
+    }
+
+    private fun clearForm() {
+        etName.text?.clear()
+        etBirthDate.text?.clear()
+        etAddress.text?.clear()
+        etPhoneNumber.text?.clear()
+        etHobbies.text?.clear()
+    }
+
+    @Suppress("DEPRECATION")
+    private fun navigateToLogin() {
+        val intent = Intent(this, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+        finish()
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 }

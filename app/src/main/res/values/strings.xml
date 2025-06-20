@@ -4,6 +4,8 @@
     <string name="name">Name</string>
     <string name="last_name">Last Name</string>
     <string name="birthday_date">Birthday Date</string>
+    <string name="age">Age</string>
+    <string name="years">Years</string>
     <string name="user">User</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
@@ -21,7 +23,6 @@
     <string name="back">Back</string>
     <string name="optional">Optional</string>
     <string name="registration_success">Registration Success</string>
-    <string name="error_name_required">Name Required</string>
     <string name="error_email_required">Email Required</string>
     <string name="error_password_required">Password Required</string>
     <string name="error_confirm_password_required">Confirm Password Required</string>
@@ -30,8 +31,20 @@
     <string name="title_home">Home</string>
     <string name="title_service">Service</string>
     <string name="add_people">Add people</string>
-    <string name="registering_user">Registrando usuario...</string>
+    <string name="registering_user">Registering user</string>
     <string name="error_registration">Error al registrar: %s</string>
     <string name="error_email_exists">This email is already registered</string>
     <string name="registration_failed">Registration failed. Please try again</string>
+    <string name="error_name_required">Name is required</string>
+    <string name="error_birthdate_required">Birth date is required</string>
+    <string name="error_address_required">Address is required</string>
+    <string name="error_phone_required">Phone number is required</string>
+    <string name="error_phone_invalid">Invalid phone number</string>
+    <string name="person_registered_success">Person registered successfully</string>
+    <string name="profile_image">Profile image</string>
+
+    <plurals name="total_people">
+        <item quantity="one">Total %d person</item>
+        <item quantity="other">Total %d people</item>
+    </plurals>
 </resources>

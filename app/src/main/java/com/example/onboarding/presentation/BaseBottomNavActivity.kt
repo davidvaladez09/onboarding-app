@@ -8,7 +8,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 abstract class BaseBottomNavActivity : AppCompatActivity() {
     @Suppress("DEPRECATION")
-    protected fun setupBottomNavigation() {
+    protected open fun setupBottomNavigation() {
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNav.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
