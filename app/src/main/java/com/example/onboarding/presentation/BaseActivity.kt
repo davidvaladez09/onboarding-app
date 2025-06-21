@@ -26,7 +26,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when(destination.id) {
-                R.id.homeFragment, R.id.listFragment, R.id.serviceFragment -> {
+                R.id.homeFragment, R.id.listFragment, R.id.registerFragment -> {
                     showBottomNavigation()
                 }
                 else -> {

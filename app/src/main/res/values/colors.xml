@@ -11,4 +11,5 @@
     <color name="purple">#df6efe</color>
     <color name="green_dark">#388E3C</color>
     <color name="gray">#dad2dc</color>
+    <color name="text_primary">#FFFFFF</color>
 </resources>

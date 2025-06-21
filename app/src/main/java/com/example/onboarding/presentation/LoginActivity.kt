@@ -1,16 +1,20 @@
 package com.example.onboarding.presentation
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.ScrollView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.onboarding.R
 import com.example.onboarding.data.database.AppDatabase
 import com.example.onboarding.data.entities.User
 import com.example.onboarding.data.repositories.UserRepository
 import com.example.onboarding.data.utils.PasswordUtils
+import com.example.onboarding.presentation.fragments.RegisterFragment
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,16 +42,15 @@ class LoginActivity : AppCompatActivity() {
         val btnRegister = findViewById<Button>(R.id.registerButton)
 
         btnRegister.setOnClickListener {
-            navigateToRegister()
+            showRegisterFragment()
         }
 
         btnLogin.setOnClickListener {
             val email = etEmail.text.toString().trim()
             val password = etPassword.text.toString().trim()
 
-
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please complete all fields", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Por favor complete todos los campos", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -63,24 +66,30 @@ class LoginActivity : AppCompatActivity() {
                             )
 
                             if (PasswordUtils.bytesToHex(hashedInput) == user.password) {
-                                navigateToHome()
+                                navigateToMain()
                             } else {
                                 Toast.makeText(
                                     this@LoginActivity,
-                                    "Incorrect email or password",
+                                    "Email o contraseña incorrectos",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
                         } else {
                             Toast.makeText(
                                 this@LoginActivity,
-                                "Incorrect email or password",
+                                "Email o contraseña incorrectos",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
                     }
                 } catch (e: Exception) {
-                    e.message
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "Error: ${e.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
         }
@@ -105,21 +114,25 @@ class LoginActivity : AppCompatActivity() {
                     repository.insertUser(testUser)
                 }
             } catch (e: Exception) {
-                Log.e(tag, "Error adding test user", e)
+                Log.e(tag, "Error agregando usuario de prueba", e)
             }
         }
     }
 
-    @Suppress("DEPRECATION")
-    private fun navigateToRegister() {
-        val intent = Intent(this, RegisterActivity::class.java)
-        startActivity(intent)
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+    private fun showRegisterFragment() {
+        findViewById<ScrollView>(R.id.login_scroll_view).visibility = View.GONE
+
+        findViewById<FrameLayout>(R.id.register_fragment_container).visibility = View.VISIBLE
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.register_fragment_container, RegisterFragment())
+            .commit()
     }
 
+
     @Suppress("DEPRECATION")
-    private fun navigateToHome() {
-        val intent = Intent(this, HomeActivity::class.java)
+    private fun navigateToMain() {
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         finish()

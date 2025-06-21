@@ -62,7 +62,7 @@ class ListActivity : BaseBottomNavActivity() {
     }
 
     private fun setupToolbar() {
-        val toolbar: View = findViewById(R.id.toolbar)
+        val toolbar: View = findViewById(R.id.nav_home)
         val btnBack: ImageButton = toolbar.findViewById(R.id.btnBack)
         val toolbarTitle: TextView = toolbar.findViewById(R.id.toolbar_title)
 

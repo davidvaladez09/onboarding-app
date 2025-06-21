@@ -1,8 +1,7 @@
-package com.example.onboarding.presentation
+package com.example.onboarding.presentation.fragments
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -15,25 +14,24 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import android.view.WindowManager
-import android.widget.ImageButton
+import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.onboarding.R
 import com.example.onboarding.data.database.AppDatabase
 import com.example.onboarding.data.entities.People
 import com.example.onboarding.data.repositories.PeopleRepository
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
@@ -44,7 +42,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class HomeActivity : BaseBottomNavActivity() {
+class HomeFragment : Fragment() {
 
     private lateinit var tilName: TextInputLayout
     private lateinit var tilBirthDate: TextInputLayout
@@ -65,19 +63,19 @@ class HomeActivity : BaseBottomNavActivity() {
     private var hasPhoto = false
 
     private val takePictureResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
+        if (result.resultCode == android.app.Activity.RESULT_OK) {
             val bitmap = BitmapFactory.decodeFile(currentPhotoPath)
             if (bitmap != null) {
                 ivProfile.setImageBitmap(bitmap)
                 hasPhoto = true
             } else {
-                Toast.makeText(this, getString(R.string.error_loading_image), Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.error_loading_image), Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private val pickImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
+        if (result.resultCode == android.app.Activity.RESULT_OK) {
             result.data?.data?.let { uri ->
                 currentPhotoPath = saveImageFromUri(uri)
                 if (currentPhotoPath != null) {
@@ -85,7 +83,7 @@ class HomeActivity : BaseBottomNavActivity() {
                     ivProfile.setImageBitmap(bitmap)
                     hasPhoto = true
                 } else {
-                    Toast.makeText(this, getString(R.string.error_saving_image), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.error_saving_image), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -102,76 +100,47 @@ class HomeActivity : BaseBottomNavActivity() {
             }
         } else {
             Toast.makeText(
-                this,
+                requireContext(),
                 getString(R.string.permission_required),
                 Toast.LENGTH_SHORT
             ).show()
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        supportActionBar?.hide()
+        tilName = view.findViewById(R.id.tilNameHome)
+        tilBirthDate = view.findViewById(R.id.tilBirthDate)
+        tilAddress = view.findViewById(R.id.tilAddress)
+        tilPhoneNumber = view.findViewById(R.id.tilPhoneNumber)
+        tilHobbies = view.findViewById(R.id.tilHobbies)
 
-        setContentView(R.layout.activity_home)
+        etName = view.findViewById(R.id.etNameHome)
+        etBirthDate = view.findViewById(R.id.etBirthDate)
+        etAddress = view.findViewById(R.id.etAddress)
+        etPhoneNumber = view.findViewById(R.id.etPhoneNumber)
+        etHobbies = view.findViewById(R.id.etHobbies)
+        btnRegister = view.findViewById(R.id.registerButton)
+        ivProfile = view.findViewById(R.id.ivProfile)
 
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        return view
+    }
 
-        val database = AppDatabase.getDatabase(this)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val database = AppDatabase.getDatabase(requireContext())
         peopleRepository = PeopleRepository(database.peopleDao())
 
-        setupBottomNavigation()
-        setupToolbar()
-        setupViews()
         setupProfileImage()
         setupPhoneNumberFormatting()
         setupDatePicker()
         setupRegisterButton()
-
-        findViewById<BottomNavigationView>(R.id.bottom_navigation).selectedItemId = R.id.nav_home
-    }
-
-    override fun setupBottomNavigation() {
-        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNavigation.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_home -> true
-                R.id.nav_list -> {
-                    startActivity(Intent(this, ListActivity::class.java))
-                    true
-                }
-                else -> false
-            }
-        }
-    }
-
-    private fun setupToolbar() {
-        val toolbar: View = findViewById(R.id.login_container)
-        val btnBack: ImageButton = toolbar.findViewById(R.id.btnBack)
-        val toolbarTitle: TextView = toolbar.findViewById(R.id.toolbar_title)
-
-        toolbarTitle.text = getString(R.string.title_home)
-
-        btnBack.setOnClickListener {
-            navigateToLogin()
-        }
-    }
-
-    private fun setupViews() {
-        tilName = findViewById(R.id.tilNameHome)
-        tilBirthDate = findViewById(R.id.tilBirthDate)
-        tilAddress = findViewById(R.id.tilAddress)
-        tilPhoneNumber = findViewById(R.id.tilPhoneNumber)
-        tilHobbies = findViewById(R.id.tilHobbies)
-
-        etName = findViewById(R.id.etNameHome)
-        etBirthDate = findViewById(R.id.etBirthDate)
-        etAddress = findViewById(R.id.etAddress)
-        etPhoneNumber = findViewById(R.id.etPhoneNumber)
-        etHobbies = findViewById(R.id.etHobbies)
-        btnRegister = findViewById(R.id.registerButton)
-        ivProfile = findViewById(R.id.ivProfile)
     }
 
     private fun setupProfileImage() {
@@ -195,7 +164,7 @@ class HomeActivity : BaseBottomNavActivity() {
             val day = calendar.get(Calendar.DAY_OF_MONTH)
 
             DatePickerDialog(
-                this,
+                requireContext(),
                 { _, selectedYear, selectedMonth, selectedDay ->
                     val formattedDate = String.format("%02d/%02d/%d", selectedDay, selectedMonth + 1, selectedYear)
                     etBirthDate.setText(formattedDate)
@@ -242,7 +211,7 @@ class HomeActivity : BaseBottomNavActivity() {
             if (hasPhoto) getString(R.string.remove_photo) else null
         ).filterNotNull()
 
-        MaterialAlertDialogBuilder(this)
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.select_image_source)
             .setItems(options.toTypedArray()) { _, which ->
                 when (options[which]) {
@@ -279,7 +248,7 @@ class HomeActivity : BaseBottomNavActivity() {
 
     private fun checkCameraPermission(): Boolean {
         return ContextCompat.checkSelfPermission(
-            this,
+            requireContext(),
             Manifest.permission.CAMERA
         ) == PackageManager.PERMISSION_GRANTED
     }
@@ -287,12 +256,12 @@ class HomeActivity : BaseBottomNavActivity() {
     private fun checkStoragePermission(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ContextCompat.checkSelfPermission(
-                this,
+                requireContext(),
                 Manifest.permission.READ_MEDIA_IMAGES
             ) == PackageManager.PERMISSION_GRANTED
         } else {
             ContextCompat.checkSelfPermission(
-                this,
+                requireContext(),
                 Manifest.permission.READ_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_GRANTED
         }
@@ -313,7 +282,7 @@ class HomeActivity : BaseBottomNavActivity() {
     @Throws(IOException::class)
     private fun createImageFile(): File {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_msys", Locale.getDefault()).format(Date())
-        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val storageDir: File? = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(
             "JPEG_${timeStamp}_",
             ".jpg",
@@ -327,7 +296,7 @@ class HomeActivity : BaseBottomNavActivity() {
     private fun dispatchTakePictureIntent() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
-        val activities = packageManager.queryIntentActivities(takePictureIntent, 0)
+        val activities = requireContext().packageManager.queryIntentActivities(takePictureIntent, 0)
         val isIntentSafe = activities.isNotEmpty()
 
         if (!isIntentSafe) {
@@ -340,29 +309,29 @@ class HomeActivity : BaseBottomNavActivity() {
             currentPhotoPath = photoFile.absolutePath
 
             val photoURI: Uri = FileProvider.getUriForFile(
-                this,
-                "${packageName}.provider",
+                requireContext(),
+                "${requireContext().packageName}.provider",
                 photoFile
             )
 
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
 
-            if (takePictureIntent.resolveActivity(packageManager) != null) {
+            if (takePictureIntent.resolveActivity(requireContext().packageManager) != null) {
                 takePictureResult.launch(takePictureIntent)
             } else {
                 showNoCameraDialog()
             }
         } catch (ex: IOException) {
             Log.e("Camera", "Error creating image file", ex)
-            Toast.makeText(this, getString(R.string.error_creating_file), Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.error_creating_file), Toast.LENGTH_SHORT).show()
         } catch (ex: SecurityException) {
             Log.e("Camera", "Security exception", ex)
-            Toast.makeText(this, getString(R.string.permission_denied_camera), Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.permission_denied_camera), Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun showNoCameraDialog() {
-        MaterialAlertDialogBuilder(this)
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.no_camera_title))
             .setMessage(getString(R.string.no_camera_message))
             .setPositiveButton(getString(R.string.choose_from_gallery)) { _, _ ->
@@ -381,9 +350,9 @@ class HomeActivity : BaseBottomNavActivity() {
 
     private fun saveImageFromUri(uri: Uri): String? {
         return try {
-            val inputStream = contentResolver.openInputStream(uri)
+            val inputStream = requireContext().contentResolver.openInputStream(uri)
             val timeStamp = SimpleDateFormat("yyyyMMdd_msys", Locale.getDefault()).format(Date())
-            val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            val storageDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
             val imageFile = File(storageDir, "SELECTED_$timeStamp.jpg")
 
             inputStream?.use { input ->
@@ -393,12 +362,12 @@ class HomeActivity : BaseBottomNavActivity() {
             }
             imageFile.absolutePath
         } catch (e: IOException) {
-            Log.e("HomeActivity", "Error saving image from URI", e)
-            Toast.makeText(this, getString(R.string.error_saving_image), Toast.LENGTH_SHORT).show()
+            Log.e("HomeFragment", "Error saving image from URI", e)
+            Toast.makeText(requireContext(), getString(R.string.error_saving_image), Toast.LENGTH_SHORT).show()
             null
         } catch (e: SecurityException) {
-            Log.e("HomeActivity", "Security exception when saving image", e)
-            Toast.makeText(this, getString(R.string.permission_required), Toast.LENGTH_SHORT).show()
+            Log.e("HomeFragment", "Security exception when saving image", e)
+            Toast.makeText(requireContext(), getString(R.string.permission_required), Toast.LENGTH_SHORT).show()
             null
         }
     }
@@ -455,21 +424,21 @@ class HomeActivity : BaseBottomNavActivity() {
             imagePath = currentPhotoPath
         )
 
-        CoroutineScope(Dispatchers.IO).launch {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val personId = peopleRepository.insertPeople(people)
 
-                runOnUiThread {
+                requireActivity().runOnUiThread {
                     if (personId > 0L) {
                         Toast.makeText(
-                            this@HomeActivity,
+                            requireContext(),
                             getString(R.string.person_registered_success),
                             Toast.LENGTH_SHORT
                         ).show()
                         clearForm()
                     } else {
                         Toast.makeText(
-                            this@HomeActivity,
+                            requireContext(),
                             getString(R.string.registration_failed),
                             Toast.LENGTH_SHORT
                         ).show()
@@ -477,9 +446,9 @@ class HomeActivity : BaseBottomNavActivity() {
                     btnRegister.isEnabled = true
                 }
             } catch (e: Exception) {
-                runOnUiThread {
+                requireActivity().runOnUiThread {
                     Toast.makeText(
-                        this@HomeActivity,
+                        requireContext(),
                         getString(R.string.error_registration, e.localizedMessage),
                         Toast.LENGTH_SHORT
                     ).show()
@@ -496,15 +465,5 @@ class HomeActivity : BaseBottomNavActivity() {
         etPhoneNumber.text?.clear()
         etHobbies.text?.clear()
         removePhoto()
-    }
-
-    @Suppress("DEPRECATION")
-    private fun navigateToLogin() {
-        val intent = Intent(this, LoginActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-        }
-        startActivity(intent)
-        finish()
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 }
