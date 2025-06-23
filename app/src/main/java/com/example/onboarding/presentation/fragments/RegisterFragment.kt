@@ -1,9 +1,12 @@
 package com.example.onboarding.presentation.fragments
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -15,6 +18,7 @@ import com.example.onboarding.data.database.AppDatabase
 import com.example.onboarding.data.entities.User
 import com.example.onboarding.data.repositories.UserRepository
 import com.example.onboarding.data.utils.PasswordUtils
+import com.example.onboarding.presentation.LoginActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -37,6 +41,12 @@ class RegisterFragment : Fragment() {
     private lateinit var progressBar: ProgressBar
 
     private lateinit var repository: UserRepository
+
+    private var backPressedListener: OnBackPressedListener? = null
+
+    interface OnBackPressedListener {
+        fun onBackPressed()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,17 +79,7 @@ class RegisterFragment : Fragment() {
         setupListeners()
     }
 
-    private fun setupToolbar(view: View) {
-        val toolbar: View = view.findViewById(R.id.toolbar)
-        val btnBack: ImageButton = toolbar.findViewById(R.id.btnBack)
-        val toolbarTitle: TextView = toolbar.findViewById(R.id.toolbar_title)
 
-        toolbarTitle.text = getString(R.string.register)
-
-        btnBack.setOnClickListener {
-            navigateToLogin()
-        }
-    }
 
     private fun setupListeners() {
         btnRegister.setOnClickListener {
@@ -124,7 +124,7 @@ class RegisterFragment : Fragment() {
                             R.string.registration_success,
                             Toast.LENGTH_SHORT
                         ).show()
-                        navigateToLogin()
+                        navigateToLoginActivity()
                     } else {
                         Toast.makeText(
                             requireContext(),
@@ -152,6 +152,7 @@ class RegisterFragment : Fragment() {
         val email = etEmail.text.toString().trim()
         val password = etPassword.text.toString()
         val confirmPassword = etConfirmPassword.text.toString()
+
 
         tilName.error = null
         tilEmail.error = null
@@ -195,6 +196,39 @@ class RegisterFragment : Fragment() {
     }
 
     private fun navigateToLogin() {
-        findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+        findNavController().navigate(R.id.action_register_to_login)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnBackPressedListener) {
+            backPressedListener = context
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        backPressedListener = null
+    }
+
+    private fun setupToolbar(view: View) {
+        val toolbar = view.findViewById<View>(R.id.toolbar)
+        val btnBack: ImageButton = toolbar.findViewById(R.id.btnBack)
+        val toolbarTitle: TextView = toolbar.findViewById(R.id.toolbar_title)
+
+        toolbarTitle.text = getString(R.string.register)
+
+        btnBack.setOnClickListener {
+            navigateToLoginActivity()
+        }
+    }
+
+    private fun navigateToLoginActivity() {
+        val intent = Intent(requireActivity(), LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+        requireActivity().finish()
+        requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 }

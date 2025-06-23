@@ -3,13 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.onboarding">
 
-    <!-- Permisos necesarios -->
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
-    <!-- Característica de cámara requerida -->
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
 
@@ -23,7 +22,7 @@
         android:requestLegacyExternalStorage="true"
         tools:targetApi="31">
 
-        <!-- Actividad de Splash -->
+        <!-- Activity Splash -->
         <activity
             android:name=".presentation.SplashActivity"
             android:exported="true">
@@ -33,19 +32,18 @@
             </intent-filter>
         </activity>
 
-        <!-- Actividad de Login -->
+        <!-- Activity Login -->
         <activity
             android:name=".presentation.LoginActivity"
             android:exported="true" />
 
-        <!-- Actividad Principal (ahora con fragmentos) -->
+        <!-- Activity Main -->
         <activity
             android:name=".presentation.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
 
-        <!-- FileProvider para compartir archivos con apps de cámara -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

@@ -11,6 +11,6 @@
         android:title="@string/title_list" />
     <item
         android:id="@+id/nav_service"
-        android:icon="@drawable/ic_list"
+        android:icon="@drawable/ci_error"
         android:title="@string/title_service" />
 </menu>

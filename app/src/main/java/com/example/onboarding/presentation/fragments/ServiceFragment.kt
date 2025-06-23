@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.example.onboarding.R
 import com.example.onboarding.presentation.BaseBottomNavActivity
 import com.example.onboarding.presentation.LoginActivity
+import com.example.onboarding.presentation.MainActivity
 
 class ServiceFragment : Fragment() {
 
@@ -37,16 +38,14 @@ class ServiceFragment : Fragment() {
         toolbarTitle.text = getString(R.string.title_service)
 
         btnBack.setOnClickListener {
-            navigateToLogin()
+            navigateToHomeFragment()
         }
     }
 
-    private fun navigateToLogin() {
-        val intent = Intent(requireActivity(), LoginActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+    private fun navigateToHomeFragment() {
+        (activity as? MainActivity)?.apply {
+            navigateToFragment(HomeFragment())
+            setSelectedNavigationItem(R.id.nav_home)
         }
-        startActivity(intent)
-        requireActivity().finish()
-        requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 }

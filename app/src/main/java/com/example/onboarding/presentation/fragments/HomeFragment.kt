@@ -17,7 +17,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -28,6 +30,7 @@ import com.example.onboarding.R
 import com.example.onboarding.data.database.AppDatabase
 import com.example.onboarding.data.entities.People
 import com.example.onboarding.data.repositories.PeopleRepository
+import com.example.onboarding.presentation.LoginActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
@@ -133,6 +136,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupToolbar(view)
 
         val database = AppDatabase.getDatabase(requireContext())
         peopleRepository = PeopleRepository(database.peopleDao())
@@ -465,5 +469,25 @@ class HomeFragment : Fragment() {
         etPhoneNumber.text?.clear()
         etHobbies.text?.clear()
         removePhoto()
+    }
+
+    private fun setupToolbar(view: View) {
+        val toolbar = view.findViewById<View>(R.id.toolbar)
+        val btnBack: ImageButton = toolbar.findViewById(R.id.btnBack)
+        val toolbarTitle: TextView = toolbar.findViewById(R.id.toolbar_title)
+
+        toolbarTitle.text = getString(R.string.title_home)
+
+        btnBack.setOnClickListener {
+            navigateToLoginActivity()
+        }
+    }
+
+    private fun navigateToLoginActivity() {
+        val intent = Intent(requireActivity(), LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+        startActivity(intent)
+        requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 }

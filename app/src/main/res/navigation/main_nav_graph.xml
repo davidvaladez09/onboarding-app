@@ -1,35 +1,48 @@
-<?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- nav_graph.xml -->
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_nav_graph"
-    app:startDestination="@id/homeFragment">
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.example.onboarding.presentation.fragments.SplashFragment"
+        android:label="SplashFragment">
+        <action
+            android:id="@+id/action_splash_to_login"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.onboarding.presentation.fragments.LoginFragment"
+        android:label="LoginFragment">
+        <action
+            android:id="@+id/action_login_to_register"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_login_to_main"
+            app:destination="@id/mainActivity" />
+    </fragment>
 
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.onboarding.presentation.fragments.RegisterFragment"
-        tools:layout="@layout/fragment_register">
-
+        android:label="RegisterFragment">
         <action
-            android:id="@+id/action_registerFragment_to_loginFragment"
-            app:destination="@id/action_registerFragment_to_loginFragment" />
+            android:id="@+id/action_register_to_login"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="false" />
     </fragment>
 
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.onboarding.presentation.fragments.HomeFragment"
-        android:label="Home"
-        tools:layout="@layout/fragment_home" />
-
-    <fragment
-        android:id="@+id/listFragment"
-        android:name="com.example.onboarding.presentation.fragments.ListFragment"
-        android:label="List"
-        tools:layout="@layout/fragment_list" />
-
-    <fragment
-        android:id="@+id/serviceFragment"
-        android:name="com.example.onboarding.presentation.fragments.ServiceFragment"
-        android:label="Service"
-        tools:layout="@layout/fragment_service" />
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.onboarding.presentation.MainActivity"
+        android:label="MainActivity">
+        <argument
+            android:name="userEmail"
+            app:argType="string" />
+    </activity>
 </navigation>

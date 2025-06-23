@@ -16,6 +16,7 @@ import com.example.onboarding.R
 import com.example.onboarding.data.database.AppDatabase
 import com.example.onboarding.data.entities.People
 import com.example.onboarding.data.repositories.PeopleRepository
+import com.example.onboarding.presentation.MainActivity
 import com.example.onboarding.presentation.PeopleAdapter
 import kotlinx.coroutines.launch
 
@@ -34,6 +35,7 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupToolbar(view)
 
         tvTotalPeople = view.findViewById(R.id.tvTotalPeople)
 
@@ -71,5 +73,24 @@ class ListFragment : Fragment() {
         val recyclerView = requireView().findViewById<RecyclerView>(R.id.rvPeople)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = PeopleAdapter(people, requireContext())
+    }
+
+    private fun setupToolbar(view: View) {
+        val toolbar = view.findViewById<View>(R.id.toolbar)
+        val btnBack: ImageButton = toolbar.findViewById(R.id.btnBack)
+        val toolbarTitle: TextView = toolbar.findViewById(R.id.toolbar_title)
+
+        toolbarTitle.text = getString(R.string.title_list)
+
+        btnBack.setOnClickListener {
+            navigateToHomeFragment()
+        }
+    }
+
+    private fun navigateToHomeFragment() {
+        (activity as? MainActivity)?.apply {
+            navigateToFragment(HomeFragment())
+            setSelectedNavigationItem(R.id.nav_home)
+        }
     }
 }
