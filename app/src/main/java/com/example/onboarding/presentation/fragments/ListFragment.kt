@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -23,6 +24,8 @@ class ListFragment : Fragment() {
     private lateinit var peopleRepository: PeopleRepository
     private lateinit var peopleAdapter: PeopleAdapter
     private lateinit var tvTotalPeople: TextView
+    private lateinit var progressBar: ProgressBar
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,34 +40,46 @@ class ListFragment : Fragment() {
         setupToolbar(view)
 
         tvTotalPeople = view.findViewById(R.id.tvTotalPeople)
+        progressBar = view.findViewById(R.id.progressBar)
+        recyclerView = view.findViewById(R.id.rvPeople)
 
         val db = AppDatabase.getDatabase(requireContext())
         peopleRepository = PeopleRepository(db.peopleDao())
 
-        setupRecyclerView(view)
+        setupRecyclerView()
         loadPeople()
     }
 
-    private fun setupRecyclerView(view: View) {
-        val recyclerView = view.findViewById<RecyclerView>(R.id.rvPeople)
+    private fun setupRecyclerView() {
         peopleAdapter = PeopleAdapter { person ->
             showPersonDetailDialog(person)
         }
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            setHasFixedSize(true) // ✅ Mejora de rendimiento
+            setHasFixedSize(true)
             adapter = peopleAdapter
         }
     }
 
     private fun loadPeople() {
+        progressBar.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
+
+        toggleLoading(true)
+
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val peopleList = peopleRepository.getAllPeople()
                 peopleAdapter.submitList(peopleList)
                 updateTotalPeopleCount(peopleList.size)
+
+                progressBar.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
+
+                toggleLoading(false)
             } catch (e: Exception) {
+                progressBar.visibility = View.GONE
                 Toast.makeText(
                     requireContext(),
                     "Error loading data: ${e.message}",
@@ -73,6 +88,39 @@ class ListFragment : Fragment() {
             }
         }
     }
+
+    private fun toggleLoading(show: Boolean) {
+        if (show) {
+            recyclerView.animate()
+                .alpha(0f)
+                .setDuration(300)
+                .withEndAction {
+                    recyclerView.visibility = View.GONE
+                }
+                .start()
+
+            progressBar.visibility = View.VISIBLE
+            progressBar.animate()
+                .alpha(1f)
+                .setDuration(300)
+                .start()
+        } else {
+            progressBar.animate()
+                .alpha(0f)
+                .setDuration(300)
+                .withEndAction {
+                    progressBar.visibility = View.GONE
+                }
+                .start()
+
+            recyclerView.visibility = View.VISIBLE
+            recyclerView.animate()
+                .alpha(1f)
+                .setDuration(300)
+                .start()
+        }
+    }
+
 
     private fun updateTotalPeopleCount(count: Int) {
         tvTotalPeople.text = resources.getQuantityString(
