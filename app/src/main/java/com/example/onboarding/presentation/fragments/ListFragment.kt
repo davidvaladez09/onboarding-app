@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -54,7 +53,7 @@ class ListFragment : Fragment() {
             } catch (e: Exception) {
                 Toast.makeText(
                     requireContext(),
-                    "Error al cargar datos: ${e.message}",
+                    "Error loading data: ${e.message}",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -72,7 +71,14 @@ class ListFragment : Fragment() {
     private fun setupRecyclerView(people: List<People>) {
         val recyclerView = requireView().findViewById<RecyclerView>(R.id.rvPeople)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = PeopleAdapter(people, requireContext())
+        recyclerView.adapter = PeopleAdapter(people, requireContext()) { person ->
+            showPersonDetailDialog(person)
+        }
+    }
+
+    private fun showPersonDetailDialog(person: People) {
+        val dialog = PersonDetailDialogFragment.newInstance(person)
+        dialog.show(parentFragmentManager, "PersonDetailDialog")
     }
 
     private fun setupToolbar(view: View) {

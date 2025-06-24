@@ -14,7 +14,8 @@ import java.io.File
 
 class PeopleAdapter(
     private val people: List<People>,
-    private val context: Context
+    private val context: Context,
+    private val onItemClick: (People) -> Unit
 ) : RecyclerView.Adapter<PeopleAdapter.PeopleViewHolder>() {
 
     inner class PeopleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -43,6 +44,10 @@ class PeopleAdapter(
             }
         } else {
             holder.ivProfileImage.setImageResource(R.drawable.ic_insert_photo)
+        }
+
+        holder.itemView.setOnClickListener {
+            onItemClick(person)
         }
     }
 

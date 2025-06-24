@@ -13,6 +13,7 @@ import com.example.onboarding.R
 import com.example.onboarding.data.database.AppDatabase
 import com.example.onboarding.data.entities.People
 import com.example.onboarding.data.repositories.PeopleRepository
+import com.example.onboarding.presentation.fragments.PersonDetailDialogFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
@@ -42,7 +43,7 @@ class ListActivity : BaseBottomNavActivity() {
                 setupRecyclerView(peopleList)
                 updateTotalPeopleCount(peopleList.size)
             } catch (e: Exception) {
-                Toast.makeText(this@ListActivity, "Error al cargar datos: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ListActivity, "Error loading data: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -58,7 +59,10 @@ class ListActivity : BaseBottomNavActivity() {
     private fun setupRecyclerView(people: List<People>) {
         val recyclerView = findViewById<RecyclerView>(R.id.rvPeople)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = PeopleAdapter(people, this)
+        recyclerView.adapter = PeopleAdapter(people, this) { person ->
+            val dialog = PersonDetailDialogFragment.newInstance(person)
+            dialog.show(supportFragmentManager, "PersonDetailDialog")
+        }
     }
 
     private fun setupToolbar() {

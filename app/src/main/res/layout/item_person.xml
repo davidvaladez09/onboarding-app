@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:paddingVertical="8dp">
 
@@ -30,7 +30,6 @@
                 android:src="@drawable/ic_insert_photo" />
         </androidx.cardview.widget.CardView>
 
-        <!-- Nombre -->
         <TextView
             android:id="@+id/tvName"
             android:layout_width="0dp"

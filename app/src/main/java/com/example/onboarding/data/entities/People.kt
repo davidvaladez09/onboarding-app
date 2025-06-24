@@ -3,6 +3,7 @@ package com.example.onboarding.data.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(tableName = "people")
 data class People(
@@ -26,4 +27,4 @@ data class People(
 
     @ColumnInfo(name = "image_path")
     val imagePath: String? = null
-)
+) : Serializable
