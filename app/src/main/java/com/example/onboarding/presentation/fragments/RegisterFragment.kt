@@ -6,13 +6,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.example.onboarding.R
 import com.example.onboarding.data.database.AppDatabase
 import com.example.onboarding.data.entities.User
@@ -195,10 +193,6 @@ class RegisterFragment : Fragment() {
         }
     }
 
-    private fun navigateToLogin() {
-        findNavController().navigate(R.id.action_register_to_login)
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnBackPressedListener) {
@@ -223,6 +217,7 @@ class RegisterFragment : Fragment() {
         }
     }
 
+    @Suppress("DEPRECATION")
     private fun navigateToLoginActivity() {
         val intent = Intent(requireActivity(), LoginActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK

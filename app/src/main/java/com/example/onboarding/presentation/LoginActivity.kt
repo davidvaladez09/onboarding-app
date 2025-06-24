@@ -6,9 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
-import android.widget.ImageButton
 import android.widget.ScrollView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.onboarding.R
@@ -72,14 +70,14 @@ class LoginActivity : AppCompatActivity() {
                             } else {
                                 Toast.makeText(
                                     this@LoginActivity,
-                                    "Email o contraseña incorrectos",
+                                    "Incorrect email or password",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
                         } else {
                             Toast.makeText(
                                 this@LoginActivity,
-                                "Email o contraseña incorrectos",
+                                "Incorrect email or password",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
@@ -116,7 +114,7 @@ class LoginActivity : AppCompatActivity() {
                     repository.insertUser(testUser)
                 }
             } catch (e: Exception) {
-                Log.e(tag, "Error agregando usuario de prueba", e)
+                Log.e(tag, "Error adding test user", e)
             }
         }
     }
@@ -131,15 +129,7 @@ class LoginActivity : AppCompatActivity() {
             .commit()
     }
 
-
     @Suppress("DEPRECATION")
-    private fun navigateToMain() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-        finish()
-    }
-
     private fun navigateToMainActivity() {
         val intent = Intent(this, MainActivity::class.java).apply {
             putExtra("FROM_LOGIN", true)

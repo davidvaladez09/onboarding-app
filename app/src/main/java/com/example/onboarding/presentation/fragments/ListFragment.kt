@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.onboarding.R
 import com.example.onboarding.data.database.AppDatabase
-import com.example.onboarding.data.entities.People
 import com.example.onboarding.data.repositories.PeopleRepository
 import com.example.onboarding.presentation.MainActivity
 import com.example.onboarding.presentation.PeopleAdapter
@@ -22,6 +21,7 @@ import kotlinx.coroutines.launch
 class ListFragment : Fragment() {
 
     private lateinit var peopleRepository: PeopleRepository
+    private lateinit var peopleAdapter: PeopleAdapter
     private lateinit var tvTotalPeople: TextView
 
     override fun onCreateView(
@@ -41,14 +41,28 @@ class ListFragment : Fragment() {
         val db = AppDatabase.getDatabase(requireContext())
         peopleRepository = PeopleRepository(db.peopleDao())
 
+        setupRecyclerView(view)
         loadPeople()
+    }
+
+    private fun setupRecyclerView(view: View) {
+        val recyclerView = view.findViewById<RecyclerView>(R.id.rvPeople)
+        peopleAdapter = PeopleAdapter { person ->
+            showPersonDetailDialog(person)
+        }
+
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            setHasFixedSize(true) // ✅ Mejora de rendimiento
+            adapter = peopleAdapter
+        }
     }
 
     private fun loadPeople() {
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val peopleList = peopleRepository.getAllPeople()
-                setupRecyclerView(peopleList)
+                peopleAdapter.submitList(peopleList)
                 updateTotalPeopleCount(peopleList.size)
             } catch (e: Exception) {
                 Toast.makeText(
@@ -68,15 +82,7 @@ class ListFragment : Fragment() {
         )
     }
 
-    private fun setupRecyclerView(people: List<People>) {
-        val recyclerView = requireView().findViewById<RecyclerView>(R.id.rvPeople)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = PeopleAdapter(people, requireContext()) { person ->
-            showPersonDetailDialog(person)
-        }
-    }
-
-    private fun showPersonDetailDialog(person: People) {
+    private fun showPersonDetailDialog(person: com.example.onboarding.data.entities.People) {
         val dialog = PersonDetailDialogFragment.newInstance(person)
         dialog.show(parentFragmentManager, "PersonDetailDialog")
     }

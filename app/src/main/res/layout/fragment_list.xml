@@ -32,7 +32,9 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:paddingHorizontal="@dimen/common_padding_16dp_default"
-            android:clipToPadding="false"/>
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:scrollbars="vertical" />
 
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

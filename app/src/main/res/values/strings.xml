@@ -56,17 +56,17 @@
     <string name="no_camera_app">No camera app</string>
     <string name="error_date_format">Error date format (dd/MM/yyyy)</string>
 
-    <string name="no_camera_title">Sin aplicación de cámara</string>
-    <string name="no_camera_message">No se encontró una aplicación de cámara. ¿Desea seleccionar una imagen de la galería?</string>
-    <string name="permission_denied_camera">Permiso denegado para acceder a la cámara</string>
+    <string name="no_camera_title">Without app camera</string>
+    <string name="no_camera_message">Not find app camera. Do you want to select an image from the gallery?</string>
+    <string name="permission_denied_camera">Permission denied to access the camera</string>
 
-    <string name="birth_date_format">Fecha de nacimiento: %s</string>
-    <string name="age_format">Edad: %d años</string>
-    <string name="address_format">Dirección: %s</string>
-    <string name="phone_format">Teléfono: %s</string>
-    <string name="hobbies_format">Hobbies: %s</string>
-    <string name="no_hobbies">No especificado</string>
-    <string name="close">Cerrar</string>
+    <string name="birth_date_format">%s</string>
+    <string name="age_format">%d years</string>
+    <string name="address_format">%s</string>
+    <string name="phone_format">%s</string>
+    <string name="hobbies_format">%s</string>
+    <string name="no_hobbies">N/A</string>
+    <string name="close">Close</string>
 
     <plurals name="total_people">
         <item quantity="one">Total %d person</item>

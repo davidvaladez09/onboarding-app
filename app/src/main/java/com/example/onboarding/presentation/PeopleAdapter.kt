@@ -1,22 +1,23 @@
 package com.example.onboarding.presentation
 
-import android.content.Context
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.onboarding.R
 import com.example.onboarding.data.entities.People
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
 class PeopleAdapter(
-    private val people: List<People>,
-    private val context: Context,
     private val onItemClick: (People) -> Unit
-) : RecyclerView.Adapter<PeopleAdapter.PeopleViewHolder>() {
+) : ListAdapter<People, PeopleAdapter.PeopleViewHolder>(PeopleDiffCallback()) {
 
     inner class PeopleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvName: TextView = itemView.findViewById(R.id.tvName)
@@ -30,7 +31,7 @@ class PeopleAdapter(
     }
 
     override fun onBindViewHolder(holder: PeopleViewHolder, position: Int) {
-        val person = people[position]
+        val person = getItem(position)
         holder.tvName.text = person.name
         holder.tvAge.text = calculateAge(person.birthDate)
 
@@ -46,29 +47,26 @@ class PeopleAdapter(
             holder.ivProfileImage.setImageResource(R.drawable.ic_insert_photo)
         }
 
-        holder.itemView.setOnClickListener {
-            onItemClick(person)
-        }
+        holder.itemView.setOnClickListener { onItemClick(person) }
     }
-
-    override fun getItemCount() = people.size
 
     private fun calculateAge(birthDate: String): String {
         return try {
-            val dateFormat = java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault())
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val birthDay = dateFormat.parse(birthDate)
-            val today = java.util.Calendar.getInstance()
-            val birthCalendar = java.util.Calendar.getInstance().apply { time = birthDay!! }
+            val today = Calendar.getInstance()
+            val birthCalendar = Calendar.getInstance().apply { time = birthDay!! }
 
-            var age = today.get(java.util.Calendar.YEAR) - birthCalendar.get(java.util.Calendar.YEAR)
-
-            if (today.get(java.util.Calendar.DAY_OF_YEAR) < birthCalendar.get(java.util.Calendar.DAY_OF_YEAR)) {
-                age--
-            }
-
-            "$age años"
+            var age = today.get(Calendar.YEAR) - birthCalendar.get(Calendar.YEAR)
+            if (today.get(Calendar.DAY_OF_YEAR) < birthCalendar.get(Calendar.DAY_OF_YEAR)) age--
+            "$age years"
         } catch (e: Exception) {
-            "Edad no disponible"
+            "Age not available"
         }
     }
+}
+
+class PeopleDiffCallback : DiffUtil.ItemCallback<People>() {
+    override fun areItemsTheSame(oldItem: People, newItem: People): Boolean = oldItem.id == newItem.id
+    override fun areContentsTheSame(oldItem: People, newItem: People): Boolean = oldItem == newItem
 }

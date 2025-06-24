@@ -1,17 +1,14 @@
 package com.example.onboarding.presentation.fragments
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.example.onboarding.R
 import com.example.onboarding.data.entities.People
-import java.io.File
 
 class PersonDetailDialogFragment : DialogFragment() {
 
@@ -36,13 +33,14 @@ class PersonDetailDialogFragment : DialogFragment() {
         return inflater.inflate(R.layout.dialog_person_detail, container, false)
     }
 
+    @Suppress("DEPRECATION")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val person = arguments?.getSerializable(ARG_PERSON) as? People
         person?.let { setupViews(view, it) }
 
-        view.findViewById<Button>(R.id.btnClose).setOnClickListener {
+        view.findViewById<Button>(R.id.elevatedButton).setOnClickListener {
             dismiss()
         }
     }

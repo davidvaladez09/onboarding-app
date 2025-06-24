@@ -483,6 +483,7 @@ class HomeFragment : Fragment() {
         }
     }
 
+    @Suppress("DEPRECATION")
     private fun navigateToLoginActivity() {
         val intent = Intent(requireActivity(), LoginActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP

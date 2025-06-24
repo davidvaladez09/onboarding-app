@@ -1,6 +1,5 @@
 package com.example.onboarding.presentation.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.onboarding.R
 import com.example.onboarding.presentation.BaseBottomNavActivity
-import com.example.onboarding.presentation.LoginActivity
 import com.example.onboarding.presentation.MainActivity
 
 class ServiceFragment : Fragment() {
