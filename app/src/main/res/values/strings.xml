@@ -60,13 +60,17 @@
     <string name="no_camera_message">Not find app camera. Do you want to select an image from the gallery?</string>
     <string name="permission_denied_camera">Permission denied to access the camera</string>
 
-    <string name="birth_date_format">%s</string>
-    <string name="age_format">%d years</string>
-    <string name="address_format">%s</string>
-    <string name="phone_format">%s</string>
-    <string name="hobbies_format">%s</string>
-    <string name="no_hobbies">N/A</string>
+    <string name="birth_date_format">Birth date: %s</string>
+    <string name="age_format">: %d years</string>
+    <string name="address_format">Address: %s</string>
+    <string name="phone_format">Phone: %s</string>
+    <string name="hobbies_format">Hobbies: %s</string>
+    <string name="no_hobbies">N/A</string> 
     <string name="close">Close</string>
+
+    <string name="empty_state_text">Empty state.</string>
+    <string name="empty_people_text">Empty list without people.</string>
+    <string name="empty_state_desc">Empty list illustration</string>
 
     <plurals name="total_people">
         <item quantity="one">Total %d person</item>

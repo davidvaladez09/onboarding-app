@@ -44,42 +44,48 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/common_padding_16dp_default">
+            android:padding="@dimen/common_padding_16dp_default"
+            android:textSize="18sp">
 
             <TextView
                 android:id="@+id/tvBirthDateDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                tools:text="01/01/1990" />
+                tools:text="01/01/1990"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/tvAgeDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                tools:text="34 años" />
+                tools:text="34 years"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/tvAddressDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                tools:text="123 Main Street, City" />
+                tools:text="123 Main Street, City"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/tvPhoneDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                tools:text="555-1234" />
+                tools:text="555-1234"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/tvHobbiesDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                tools:text="Reading, Sports, Music" />
+                tools:text="Reading, Sports, Music"
+                android:textSize="18sp" />
 
         </LinearLayout>
 

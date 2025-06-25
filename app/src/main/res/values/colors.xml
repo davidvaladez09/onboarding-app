@@ -13,4 +13,7 @@
     <color name="gray">#dad2dc</color>
     <color name="text_primary">#FFFFFF</color>
     <color name="red">#f44336</color>
+    <color name="gray_light">#d5dbdb</color>
+    <color name="gray_medium">#aab7b8</color>
+    gray_light
 </resources>

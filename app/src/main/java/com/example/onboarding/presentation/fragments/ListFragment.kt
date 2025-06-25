@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -26,6 +27,7 @@ class ListFragment : Fragment() {
     private lateinit var tvTotalPeople: TextView
     private lateinit var progressBar: ProgressBar
     private lateinit var recyclerView: RecyclerView
+    private lateinit var emptyStateView: LinearLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,6 +50,7 @@ class ListFragment : Fragment() {
 
         setupRecyclerView()
         loadPeople()
+        emptyStateView = view.findViewById(R.id.emptyStateView)
     }
 
     private fun setupRecyclerView() {
@@ -63,9 +66,6 @@ class ListFragment : Fragment() {
     }
 
     private fun loadPeople() {
-        progressBar.visibility = View.VISIBLE
-        recyclerView.visibility = View.GONE
-
         toggleLoading(true)
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -74,12 +74,15 @@ class ListFragment : Fragment() {
                 peopleAdapter.submitList(peopleList)
                 updateTotalPeopleCount(peopleList.size)
 
-                progressBar.visibility = View.GONE
-                recyclerView.visibility = View.VISIBLE
+                if (peopleList.isEmpty()) {
+                    showEmptyState()
+                } else {
+                    hideEmptyState()
+                }
 
                 toggleLoading(false)
             } catch (e: Exception) {
-                progressBar.visibility = View.GONE
+                toggleLoading(false)
                 Toast.makeText(
                     requireContext(),
                     "Error loading data: ${e.message}",
@@ -87,6 +90,16 @@ class ListFragment : Fragment() {
                 ).show()
             }
         }
+    }
+
+    private fun showEmptyState() {
+        emptyStateView.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
+    }
+
+    private fun hideEmptyState() {
+        emptyStateView.visibility = View.GONE
+        recyclerView.visibility = View.VISIBLE
     }
 
     private fun toggleLoading(show: Boolean) {

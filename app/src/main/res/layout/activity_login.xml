@@ -103,7 +103,7 @@
                 android:id="@+id/registerButton"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/common_height_button_70dp"
-                android:layout_marginTop="76dp"
+                android:layout_marginTop="16dp"
                 android:backgroundTint="@color/purple"
                 android:text="@string/register"
                 android:textColor="@color/black"
