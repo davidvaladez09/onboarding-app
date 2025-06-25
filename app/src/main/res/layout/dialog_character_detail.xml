@@ -56,43 +56,27 @@
                 android:padding="@dimen/common_padding_16dp_default">
 
                 <TextView
-                    android:id="@+id/tvBirthDateDetail"
+                    android:id="@+id/tvName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    tools:text="01/01/1990"
+                    tools:text="Rick"
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/tvAgeDetail"
+                    android:id="@+id/tvOrigin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    tools:text="34 years"
+                    tools:text="Earth"
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/tvAddressDetail"
+                    android:id="@+id/tvStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    tools:text="123 Main Street, City"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/tvPhoneDetail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    tools:text="555-1234"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/tvHobbiesDetail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    tools:text="Reading, Sports, Music"
+                    tools:text="Dead"
                     android:textSize="18sp" />
             </LinearLayout>
         </ScrollView>

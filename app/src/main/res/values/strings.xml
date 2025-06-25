@@ -73,14 +73,17 @@
     <string name="empty_state_desc">Empty list illustration</string>
 
     <string name="character_image">Character image</string>
+    <string name="search_character">Search character</string>
+
+    <string name="search_hint">Buscar personajes...</string>
 
     <plurals name="total_people">
-        <item quantity="one">Total %d person</item>
+        <item quantity="one">Total %d people</item>
         <item quantity="other">Total %d people</item>
     </plurals>
 
     <plurals name="total_characters">
-        <item quantity="one">Total %d person</item>
-        <item quantity="other">Total %d people</item>
+        <item quantity="one">Total %d characters</item>
+        <item quantity="other">Total %d characters</item>
     </plurals>
 </resources>

@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +21,7 @@ import com.example.onboarding.data.repositories.CharacterRepository
 import com.example.onboarding.presentation.activities.BaseBottomNavActivity
 import com.example.onboarding.presentation.adapter.CharacterAdapter
 import com.example.onboarding.presentation.MainActivity
+import com.example.onboarding.data.viewmodels.CharacterViewModel
 import kotlinx.coroutines.launch
 
 class ServiceFragment : Fragment() {
@@ -28,6 +31,8 @@ class ServiceFragment : Fragment() {
     private lateinit var progressBar: ProgressBar
     private lateinit var recyclerView: RecyclerView
     private lateinit var emptyStateView: LinearLayout
+    private lateinit var searchView: SearchView
+    private lateinit var viewModel: CharacterViewModel
     private val repository = CharacterRepository()
 
     override fun onCreateView(
@@ -41,6 +46,9 @@ class ServiceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel = ViewModelProvider(this)[CharacterViewModel::class.java]
+        viewModel.setRepository(repository)
+
         (activity as? BaseBottomNavActivity)?.setSelectedNavigationItem(R.id.nav_service)
         setupToolbar(view)
 
@@ -48,8 +56,11 @@ class ServiceFragment : Fragment() {
         progressBar = view.findViewById(R.id.progressBar)
         recyclerView = view.findViewById(R.id.rvCharacters)
         emptyStateView = view.findViewById(R.id.emptyStateView)
+        searchView = view.findViewById(R.id.searchView)
 
+        setupSearchView()
         setupRecyclerView()
+        observeViewModel()
         loadCharacters()
     }
 
@@ -65,32 +76,46 @@ class ServiceFragment : Fragment() {
         }
     }
 
-    private fun loadCharacters() {
-        toggleLoading(true)
-
+    private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
-            try {
-                val characters = repository.getCharacters()
-
-                if (!isAdded || view == null) return@launch
-
+            viewModel.filteredCharacters.collect { characters ->
                 characterAdapter.submitList(characters)
                 updateTotalCharactersCount(characters.size)
-                hideEmptyState()
+                if (characters.isEmpty()) showEmptyState() else hideEmptyState()
+            }
+        }
 
-            } catch (e: Exception) {
-                if (!isAdded) return@launch
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.isLoading.collect { isLoading ->
+                toggleLoading(isLoading)
+            }
+        }
 
-                showEmptyState()
-                showErrorToast("Error: ${e.message ?: "Unknown error"}")
-
-                e.printStackTrace()
-            } finally {
-                if (isAdded) {
-                    toggleLoading(false)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.error.collect { error ->
+                error?.let {
+                    showErrorToast(it)
+                    viewModel.clearError()
                 }
             }
         }
+    }
+
+    private fun setupSearchView() {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                viewModel.filterCharacters(newText.orEmpty())
+                return true
+            }
+        })
+    }
+
+    private fun loadCharacters() {
+        viewModel.loadCharacters()
     }
 
     private fun showErrorToast(message: String) {

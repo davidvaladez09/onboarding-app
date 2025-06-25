@@ -13,8 +13,4 @@ class PeopleRepository(private val peopleDao: PeopleDao) {
     suspend fun getAllPeople() = withContext(Dispatchers.IO) {
         peopleDao.getAllPeople()
     }
-
-    suspend fun updatePeople(people: People) = withContext(Dispatchers.IO) {
-        peopleDao.updatePerson(people)
-    }
 }

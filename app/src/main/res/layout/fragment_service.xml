@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
     tools:context=".presentation.fragments.ServiceFragment">
 
@@ -15,6 +15,14 @@
         android:orientation="vertical"
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_marginBottom="?attr/actionBarSize">
+
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:queryHint="@string/search_character"
+            android:iconifiedByDefault="false"
+            android:layout_margin="8dp"/>
 
         <TextView
             android:id="@+id/tvTotalCharacters"
@@ -52,7 +60,7 @@
                     android:layout_height="120dp"
                     android:src="@drawable/ic_engineering"
                     android:contentDescription="@string/empty_state_desc"
-                    android:tint="@color/gray_medium"/>
+                    app:tint="@color/gray_medium"/>
 
                 <TextView
                     android:layout_width="wrap_content"
