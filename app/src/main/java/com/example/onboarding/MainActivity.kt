@@ -1,45 +1,35 @@
-package com.example.onboarding
+package com.example.onboarding.presentation
 
-import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.view.Menu
-import androidx.activity.ComponentActivity
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.onboarding.presentation.LoginActivity
-import com.example.onboarding.ui.theme.OnboardingTheme
+import androidx.fragment.app.Fragment
+import com.example.onboarding.R
+import com.example.onboarding.presentation.activities.BaseBottomNavActivity
+import com.example.onboarding.presentation.fragments.HomeFragment
 
-class MainActivity : ComponentActivity() {
+class MainActivity : BaseBottomNavActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_splash)
+        setContentView(R.layout.activity_main)
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }, 2000)
+        if (savedInstanceState == null) {
+            val fragment = if (intent.getBooleanExtra("FROM_LOGIN", false)) {
+                HomeFragment()
+            } else {
+                HomeFragment()
+            }
+
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit()
+        }
+
+        setupBottomNavigation()
+        setSelectedNavigationItem(R.id.nav_home)
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    OnboardingTheme {
-        Greeting("Android")
+    fun navigateToFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
     }
 }

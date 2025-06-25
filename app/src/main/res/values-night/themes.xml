@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Onboarding" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorOutline">@color/outline_dark</item>
+        <item name="colorOnSurfaceVariant">@color/on_surface_variant_dark</item>
+        <item name="colorSurfaceContainer">@color/surface_container_dark</item>
+    </style>
+</resources>

@@ -2,7 +2,7 @@ package com.example.onboarding.data.repositories
 
 import com.example.onboarding.data.dao.UserDao
 import com.example.onboarding.data.entities.User
-import com.example.onboarding.data.utils.PasswordUtils
+import com.example.onboarding.data.dto.PasswordUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

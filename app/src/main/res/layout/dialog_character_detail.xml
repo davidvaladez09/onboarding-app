@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="?android:attr/textColorPrimary">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:clipToPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="?attr/colorPrimary"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvNameDetail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="John Doe" />
+
+            <Button
+                android:id="@+id/elevatedButton"
+                style="@style/Widget.Material3.Button.Icon"
+                android:layout_width="41dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                app:icon="@drawable/ic_close"
+                android:textColor="?attr/colorOnPrimary"/>
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/textColorPrimary"
+            android:paddingBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/common_padding_16dp_default">
+
+                <TextView
+                    android:id="@+id/tvBirthDateDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    tools:text="01/01/1990"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/tvAgeDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    tools:text="34 years"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tvAddressDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    tools:text="123 Main Street, City"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tvPhoneDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    tools:text="555-1234"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tvHobbiesDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    tools:text="Reading, Sports, Music"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

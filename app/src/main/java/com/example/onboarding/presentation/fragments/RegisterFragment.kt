@@ -1,16 +1,22 @@
-package com.example.onboarding.presentation
+package com.example.onboarding.presentation.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.onboarding.R
 import com.example.onboarding.data.database.AppDatabase
+import com.example.onboarding.data.entities.User
 import com.example.onboarding.data.repositories.UserRepository
+import com.example.onboarding.data.dto.PasswordUtils
+import com.example.onboarding.presentation.activities.LoginActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -18,7 +24,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class RegisterActivity : AppCompatActivity() {
+class RegisterFragment : Fragment() {
 
     private lateinit var tilName: TextInputLayout
     private lateinit var tilEmail: TextInputLayout
@@ -30,61 +36,107 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var etPassword: TextInputEditText
     private lateinit var etConfirmPassword: TextInputEditText
     private lateinit var btnRegister: MaterialButton
+    private lateinit var progressBar: ProgressBar
 
     private lateinit var repository: UserRepository
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private var backPressedListener: OnBackPressedListener? = null
 
-        supportActionBar?.hide()
+    interface OnBackPressedListener {
+        fun onBackPressed()
+    }
 
-        setContentView(R.layout.activity_register)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_register, container, false)
+    }
 
-        setupToolbar()
-        initViews()
-        setupListeners()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        val database = AppDatabase.getDatabase(this)
+        tilName = view.findViewById(R.id.tilName)
+        tilEmail = view.findViewById(R.id.tilEmailRegister)
+        tilPassword = view.findViewById(R.id.tilPasswordRegister)
+        tilConfirmPassword = view.findViewById(R.id.tilConfirmPasswordRegister)
+
+        etName = view.findViewById(R.id.etName)
+        etEmail = view.findViewById(R.id.etEmailRegister)
+        etPassword = view.findViewById(R.id.etPasswordRegister)
+        etConfirmPassword = view.findViewById(R.id.etConfirmPasswordRegister)
+        btnRegister = view.findViewById(R.id.registerButton)
+        progressBar = view.findViewById(R.id.progressBar)
+
+        setupToolbar(view)
+
+        val database = AppDatabase.getDatabase(requireContext())
         repository = UserRepository(database.userDao())
+
+        setupListeners()
+    }
+
+
+
+    private fun setupListeners() {
+        btnRegister.setOnClickListener {
+            validateAndRegister()
+        }
     }
 
     private fun performRegistration(name: String, email: String, password: String) {
-        findViewById<ProgressBar>(R.id.progressBar).visibility = View.VISIBLE
+        progressBar.visibility = View.VISIBLE
+        btnRegister.isEnabled = false
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 if (repository.emailExists(email)) {
-                    runOnUiThread {
+                    requireActivity().runOnUiThread {
                         tilEmail.error = getString(R.string.error_email_exists)
-                        findViewById<ProgressBar>(R.id.progressBar).visibility = View.GONE
+                        progressBar.visibility = View.GONE
+                        btnRegister.isEnabled = true
                     }
                     return@launch
                 }
 
-                val userId = repository.registerUser(name, email, password)
+                val salt = PasswordUtils.generateSalt()
+                val hashedPassword = PasswordUtils.hashPassword(password, salt)
 
-                runOnUiThread {
-                    findViewById<ProgressBar>(R.id.progressBar).visibility = View.GONE
+                val user = User(
+                    username = name,
+                    email = email,
+                    password = PasswordUtils.bytesToHex(hashedPassword),
+                    salt = PasswordUtils.bytesToHex(salt)
+                )
+
+                val userId = repository.insertUser(user)
+
+                requireActivity().runOnUiThread {
+                    progressBar.visibility = View.GONE
+                    btnRegister.isEnabled = true
+
                     if (userId > 0) {
                         Toast.makeText(
-                            this@RegisterActivity,
+                            requireContext(),
                             R.string.registration_success,
                             Toast.LENGTH_SHORT
                         ).show()
-                        navigateToLogin()
+                        navigateToLoginActivity()
                     } else {
                         Toast.makeText(
-                            this@RegisterActivity,
+                            requireContext(),
                             R.string.registration_failed,
                             Toast.LENGTH_SHORT
                         ).show()
                     }
                 }
             } catch (e: Exception) {
-                runOnUiThread {
-                    findViewById<ProgressBar>(R.id.progressBar).visibility = View.GONE
+                requireActivity().runOnUiThread {
+                    progressBar.visibility = View.GONE
+                    btnRegister.isEnabled = true
                     Toast.makeText(
-                        this@RegisterActivity,
+                        requireContext(),
                         "Error: ${e.message}",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -93,42 +145,12 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupToolbar() {
-        val toolbar: View = findViewById(R.id.toolbar)
-        val btnBack: ImageButton = toolbar.findViewById(R.id.btnBack)
-        val toolbarTitle: TextView = toolbar.findViewById(R.id.toolbar_title)
-
-        toolbarTitle.text = getString(R.string.register)
-
-        btnBack.setOnClickListener {
-            navigateToLogin()
-        }
-    }
-
-    private fun initViews() {
-        tilName = findViewById(R.id.tilName)
-        tilEmail = findViewById(R.id.tilEmailRegister)
-        tilPassword = findViewById(R.id.tilPasswordRegister)
-        tilConfirmPassword = findViewById(R.id.tilConfirmPasswordRegister)
-
-        etName = findViewById(R.id.etName)
-        etEmail = findViewById(R.id.etEmailRegister)
-        etPassword = findViewById(R.id.etPasswordRegister)
-        etConfirmPassword = findViewById(R.id.etConfirmPasswordRegister)
-        btnRegister = findViewById(R.id.registerButton)
-    }
-
-    private fun setupListeners() {
-        btnRegister.setOnClickListener {
-            validateAndRegister()
-        }
-    }
-
     private fun validateAndRegister() {
         val name = etName.text.toString().trim()
         val email = etEmail.text.toString().trim()
         val password = etPassword.text.toString()
         val confirmPassword = etConfirmPassword.text.toString()
+
 
         tilName.error = null
         tilEmail.error = null
@@ -171,13 +193,37 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnBackPressedListener) {
+            backPressedListener = context
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        backPressedListener = null
+    }
+
+    private fun setupToolbar(view: View) {
+        val toolbar = view.findViewById<View>(R.id.toolbar)
+        val btnBack: ImageButton = toolbar.findViewById(R.id.btnBack)
+        val toolbarTitle: TextView = toolbar.findViewById(R.id.toolbar_title)
+
+        toolbarTitle.text = getString(R.string.register)
+
+        btnBack.setOnClickListener {
+            navigateToLoginActivity()
+        }
+    }
+
     @Suppress("DEPRECATION")
-    private fun navigateToLogin() {
-        val intent = Intent(this, LoginActivity::class.java).apply {
+    private fun navigateToLoginActivity() {
+        val intent = Intent(requireActivity(), LoginActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
         }
         startActivity(intent)
-        finish()
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        requireActivity().finish()
+        requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 }
