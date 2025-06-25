@@ -72,7 +72,14 @@
     <string name="empty_people_text">Empty list without people.</string>
     <string name="empty_state_desc">Empty list illustration</string>
 
+    <string name="character_image">Character image</string>
+
     <plurals name="total_people">
+        <item quantity="one">Total %d person</item>
+        <item quantity="other">Total %d people</item>
+    </plurals>
+
+    <plurals name="total_characters">
         <item quantity="one">Total %d person</item>
         <item quantity="other">Total %d people</item>
     </plurals>

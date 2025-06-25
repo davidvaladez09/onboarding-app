@@ -1,6 +1,5 @@
-package com.example.onboarding.presentation
+package com.example.onboarding.presentation.activities
 
-import android.content.Intent
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment

@@ -17,7 +17,7 @@ import com.example.onboarding.R
 import com.example.onboarding.data.database.AppDatabase
 import com.example.onboarding.data.repositories.PeopleRepository
 import com.example.onboarding.presentation.MainActivity
-import com.example.onboarding.presentation.PeopleAdapter
+import com.example.onboarding.presentation.adapter.PeopleAdapter
 import kotlinx.coroutines.launch
 
 class ListFragment : Fragment() {

@@ -1,8 +1,45 @@
-package com.example.onboarding.data.utils
+package com.example.onboarding.data.dto
 
 import java.security.SecureRandom
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
+
+data class CharacterResponse(
+    val info: Info,
+    val results: List<Character>
+)
+
+data class Info(
+    val count: Int,
+    val pages: Int,
+    val next: String?,
+    val prev: String?
+)
+
+data class Character(
+    val id: Int,
+    val name: String,
+    val status: String,
+    val species: String,
+    val type: String,
+    val gender: String,
+    val origin: Origin,
+    val location: Location,
+    val image: String,
+    val episode: List<String>,
+    val url: String,
+    val created: String
+)
+
+data class Origin(
+    val name: String,
+    val url: String
+)
+
+data class Location(
+    val name: String,
+    val url: String
+)
 
 object PasswordUtils {
     private const val ITERATIONS = 10000
@@ -43,8 +80,8 @@ object PasswordUtils {
         val data = ByteArray(len / 2)
         var i = 0
         while (i < len) {
-            data[i / 2] = ((Character.digit(hex[i], 16) shl 4) +
-                    Character.digit(hex[i + 1], 16)).toByte()
+            data[i / 2] = ((hex[i].digitToInt(16) shl 4) +
+                    hex[i + 1].digitToInt(16)).toByte()
             i += 2
         }
         return data

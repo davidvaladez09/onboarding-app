@@ -30,7 +30,7 @@ import com.example.onboarding.R
 import com.example.onboarding.data.database.AppDatabase
 import com.example.onboarding.data.entities.People
 import com.example.onboarding.data.repositories.PeopleRepository
-import com.example.onboarding.presentation.LoginActivity
+import com.example.onboarding.presentation.activities.LoginActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText

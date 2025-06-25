@@ -1,4 +1,4 @@
-package com.example.onboarding.presentation
+package com.example.onboarding.presentation.adapter
 
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater

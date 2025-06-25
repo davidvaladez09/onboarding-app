@@ -3,6 +3,7 @@ package com.example.onboarding.presentation
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.onboarding.R
+import com.example.onboarding.presentation.activities.BaseBottomNavActivity
 import com.example.onboarding.presentation.fragments.HomeFragment
 
 class MainActivity : BaseBottomNavActivity() {

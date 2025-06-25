@@ -57,6 +57,7 @@ dependencies {
     // Room components
     implementation("androidx.room:room-runtime:2.6.1")
     implementation(libs.androidx.ui.test.android)
+    implementation(libs.androidx.tracing.perfetto.handshake)
     kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     implementation ("androidx.recyclerview:recyclerview:1.3.2")
@@ -67,6 +68,14 @@ dependencies {
 
     // Kotlin components
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+
+    // Glide
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    kapt("com.github.bumptech.glide:compiler:4.16.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

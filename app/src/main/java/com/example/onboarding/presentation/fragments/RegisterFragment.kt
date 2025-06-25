@@ -15,8 +15,8 @@ import com.example.onboarding.R
 import com.example.onboarding.data.database.AppDatabase
 import com.example.onboarding.data.entities.User
 import com.example.onboarding.data.repositories.UserRepository
-import com.example.onboarding.data.utils.PasswordUtils
-import com.example.onboarding.presentation.LoginActivity
+import com.example.onboarding.data.dto.PasswordUtils
+import com.example.onboarding.presentation.activities.LoginActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
