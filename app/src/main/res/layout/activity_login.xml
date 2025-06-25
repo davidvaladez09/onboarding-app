@@ -38,7 +38,7 @@
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:layout_marginTop="16dp"
-                android:textColor="@color/black"
+                android:textColor="?android:attr/textColorPrimary"
                 android:layout_gravity="center"/>
 
             <com.google.android.material.textfield.TextInputLayout

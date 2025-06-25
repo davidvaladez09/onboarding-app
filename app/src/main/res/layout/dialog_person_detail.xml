@@ -1,59 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="16dp"
     app:cardCornerRadius="16dp"
-    app:cardElevation="4dp">
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="?attr/colorSurfaceVariant">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:clipToPadding="true">
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.RoundedCard"
+        android:background="@android:color/transparent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@drawable/dialog_header_background"
             android:orientation="horizontal"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:background="@color/green">
 
             <TextView
                 android:id="@+id/tvNameDetail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@android:color/black"
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 tools:text="John Doe" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/elevatedButton"
                 style="@style/Widget.Material3.Button.Icon"
                 android:layout_width="41dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 app:icon="@drawable/ic_close"
-                android:textColor="@color/black"/>
+                app:iconTint="@color/black"
+                app:backgroundTint="@color/green"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"/>
         </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@android:color/transparent"
             android:paddingBottom="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/common_padding_16dp_default">
+                android:padding="16dp"
+                android:background="@android:color/transparent">
 
                 <TextView
                     android:id="@+id/tvBirthDateDetail"
@@ -61,7 +67,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     tools:text="01/01/1990"
-                    android:textSize="18sp" />
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/tvAgeDetail"
@@ -69,6 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     tools:text="34 years"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="18sp" />
 
                 <TextView
@@ -77,6 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     tools:text="123 Main Street, City"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="18sp" />
 
                 <TextView
@@ -85,6 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     tools:text="555-1234"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="18sp" />
 
                 <TextView
@@ -93,8 +103,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     tools:text="Reading, Sports, Music"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="18sp" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

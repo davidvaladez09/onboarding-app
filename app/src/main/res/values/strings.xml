@@ -61,7 +61,7 @@
     <string name="permission_denied_camera">Permission denied to access the camera</string>
 
     <string name="birth_date_format">Birth date: %s</string>
-    <string name="age_format">: %d years</string>
+    <string name="age_format">%d years</string>
     <string name="address_format">Address: %s</string>
     <string name="phone_format">Phone: %s</string>
     <string name="hobbies_format">Hobbies: %s</string>
@@ -74,8 +74,6 @@
 
     <string name="character_image">Character image</string>
     <string name="search_character">Search character</string>
-
-    <string name="search_hint">Buscar personajes...</string>
 
     <plurals name="total_people">
         <item quantity="one">Total %d people</item>

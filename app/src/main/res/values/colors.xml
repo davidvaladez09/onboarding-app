@@ -15,5 +15,10 @@
     <color name="red">#f44336</color>
     <color name="gray_light">#d5dbdb</color>
     <color name="gray_medium">#aab7b8</color>
-    gray_light
+    <color name="color_on_surface">@color/white</color>
+    <color name="surface_variant_light">@color/gray_medium</color>
+    <color name="primary_container_light">#EADDFF</color>
+    <color name="on_primary_container_light">#21005D</color>
+
+    <color name="gray_dark_800">#424242</color>
 </resources>

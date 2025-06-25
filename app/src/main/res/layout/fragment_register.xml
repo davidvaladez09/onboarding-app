@@ -45,7 +45,7 @@
                     android:text="@string/register_new_account"
                     android:textSize="24sp"
                     android:layout_marginTop="@dimen/common_padding_16dp_default"
-                    android:textColor="@color/black"/>
+                    android:textColor="?attr/colorOnSurface" />
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
