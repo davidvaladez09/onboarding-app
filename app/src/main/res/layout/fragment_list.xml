@@ -53,7 +53,7 @@
                     android:layout_height="120dp"
                     android:src="@drawable/ic_engineering"
                     android:contentDescription="@string/empty_state_desc"
-                    app:tint="@color/gray_medium" />
+                    app:tint="@color/on_surface" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -81,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:indeterminateTint="@color/purple"
+                android:indeterminateTint="@color/secondary"
                 android:visibility="visible" />
 
         </FrameLayout>

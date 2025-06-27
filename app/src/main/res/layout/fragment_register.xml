@@ -144,13 +144,13 @@
                 android:layout_height="@dimen/common_height_button_70dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="32dp"
-                android:backgroundTint="@color/green"
+                android:backgroundTint="@color/primary"
                 android:text="@string/register"
-                android:textColor="@color/black"
+                android:textColor="@color/on_primary"
                 android:textSize="18sp"
                 app:cornerRadius="6dp"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                app:strokeColor="@color/green"
+                app:strokeColor="@color/primary"
                 app:strokeWidth="10dp"/>
         </LinearLayout>
     </ScrollView>

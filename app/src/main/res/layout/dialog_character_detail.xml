@@ -7,7 +7,7 @@
     android:layout_margin="16dp"
     app:cardCornerRadius="16dp"
     app:cardElevation="4dp"
-    app:cardBackgroundColor="?android:attr/textColorPrimary">
+    app:cardBackgroundColor="?attr/colorSurfaceVariant">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="?attr/colorPrimary"
+            android:background="@color/error"
             android:orientation="horizontal"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
@@ -29,25 +29,16 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="?attr/colorOnPrimary"
+                android:textColor="@color/on_primary"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                tools:text="John Doe" />
-
-            <Button
-                android:id="@+id/elevatedButton"
-                style="@style/Widget.Material3.Button.Icon"
-                android:layout_width="41dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                app:icon="@drawable/ic_close"
-                android:textColor="?attr/colorOnPrimary"/>
+                tools:text="Rick Sanchez" />
         </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?android:attr/textColorPrimary"
+            android:background="?attr/colorSurfaceVariant"
             android:paddingBottom="16dp">
 
             <LinearLayout
@@ -57,49 +48,61 @@
                 android:padding="@dimen/common_padding_16dp_default">
 
                 <TextView
-                    android:id="@+id/tvBirthDateDetail"
+                    android:id="@+id/tvStatusDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    tools:text="01/01/1990"
-                    android:textColor="?android:attr/textColorPrimary"
+                    tools:text="Status: Alive"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="18sp"/>
 
                 <TextView
-                    android:id="@+id/tvAgeDetail"
+                    android:id="@+id/tvSpeciesDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    tools:text="34 years"
-                    android:textColor="?android:attr/textColorPrimary"
+                    tools:text="Species: Human"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/tvAddressDetail"
+                    android:id="@+id/tvGenderDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    tools:text="123 Main Street, City"
-                    android:textColor="?android:attr/textColorPrimary"
+                    tools:text="Gender: Male"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/tvPhoneDetail"
+                    android:id="@+id/tvOriginDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    tools:text="555-1234"
-                    android:textColor="?android:attr/textColorPrimary"
+                    tools:text="Origin: Earth (C-137)"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/tvHobbiesDetail"
+                    android:id="@+id/tvLocationDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    tools:text="Reading, Sports, Music"
-                    android:textColor="?android:attr/textColorPrimary"
+                    tools:text="Location: Earth"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="18sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/elevatedButton"
+                    style="@style/Widget.Material3.Button.Icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/common_padding_16dp_default"
+                    app:iconTint="@color/background"
+                    app:backgroundTint="@color/error"
+                    android:layout_gravity="center"
+                    android:text="@string/close"
+                    android:textColor="@color/on_primary"/>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

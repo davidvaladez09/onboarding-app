@@ -7,7 +7,7 @@
     <style name="CustomProgressBar" parent="Widget.AppCompat.ProgressBar">
         <item name="android:layout_width">48dp</item>
         <item name="android:layout_height">48dp</item>
-        <item name="android:indeterminateTint">@color/purple</item>
+        <item name="android:indeterminateTint">@color/secondary</item>
         <item name="android:indeterminateDuration">1000</item>
     </style>
     <style name="ShapeAppearance.RoundedCard" parent="ShapeAppearance.Material3.MediumComponent">

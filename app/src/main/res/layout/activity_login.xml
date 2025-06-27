@@ -25,7 +25,7 @@
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:src="@drawable/ic_android"
-                app:tint="@color/green"
+                app:tint="@color/primary"
                 android:contentDescription="@string/app_name"
                 android:scaleType="fitCenter"
                 android:layout_gravity="center"
@@ -93,9 +93,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/common_height_button_70dp"
                 android:layout_marginTop="32dp"
-                android:backgroundTint="@color/green"
+                android:backgroundTint="@color/primary"
                 android:text="@string/login"
-                android:textColor="@color/black"
+                android:textColor="@color/on_primary"
                 app:cornerRadius="@dimen/common_border_radius_8dp"
                 style="@style/Widget.MaterialComponents.Button" />
 
@@ -104,12 +104,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/common_height_button_70dp"
                 android:layout_marginTop="16dp"
-                android:backgroundTint="@color/purple"
+                android:backgroundTint="@color/secondary"
                 android:text="@string/register"
-                android:textColor="@color/black"
+                android:textColor="@color/on_primary"
                 app:cornerRadius="@dimen/common_border_radius_8dp"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                app:strokeColor="@color/purple"
+                app:strokeColor="@color/secondary"
                 app:strokeWidth="10dp" />
 
         </LinearLayout>

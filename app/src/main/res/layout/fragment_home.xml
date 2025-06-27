@@ -15,25 +15,25 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="@dimen/common_padding_16dp_default"
-        android:fillViewport="true"
         android:layout_above="@id/bottom_navigation"
+        android:fillViewport="true"
+        android:paddingHorizontal="@dimen/common_padding_16dp_default"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/common_padding_16dp_default"
             android:orientation="vertical"
-            android:paddingVertical="16dp"
-            android:layout_margin="@dimen/common_padding_16dp_default">
+            android:paddingVertical="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center_horizontal"
                 android:layout_marginTop="32dp"
-                android:layout_marginBottom="24dp">
+                android:layout_marginBottom="24dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="140dp"
@@ -49,7 +49,7 @@
                         android:src="@drawable/ic_add_a_photo"
                         android:contentDescription="@string/profile_image"
                         android:scaleType="centerCrop"
-                        android:background="@color/gray"
+                        android:background="@color/on_background"
                         android:clickable="true"
                         android:focusable="true"/>
                 </androidx.cardview.widget.CardView>
@@ -58,151 +58,151 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/tap_to_add_photo"
-                    android:textSize="14sp"
-                    android:textColor="?attr/colorOnSurface"/>
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilNameHome"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:minHeight="56dp"
-                app:endIconMode="custom"
+                app:cornerRadius="@dimen/common_border_radius_8dp"
                 app:endIconDrawable="@drawable/ic_drive_file_rename"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:cornerRadius="@dimen/common_border_radius_8dp">
+                app:endIconMode="custom">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etNameHome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="56dp"
-                    android:paddingVertical="@dimen/common_padding_16dp_default"
-                    android:paddingHorizontal="12dp"
                     android:hint="@string/name"
-                    android:minWidth="120dp"
-                    android:inputType="textPersonName"
                     android:imeOptions="actionNext"
-                    android:nextFocusForward="@id/etBirthDate"/>
+                    android:inputType="textPersonName"
+                    android:minWidth="120dp"
+                    android:minHeight="56dp"
+                    android:nextFocusForward="@id/etBirthDate"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="@dimen/common_padding_16dp_default" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilBirthDate"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:minHeight="56dp"
-                app:endIconMode="custom"
+                app:cornerRadius="@dimen/common_border_radius_8dp"
                 app:endIconDrawable="@drawable/ic_calendar_month"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:cornerRadius="@dimen/common_border_radius_8dp">
+                app:endIconMode="custom">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etBirthDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="56dp"
-                    android:paddingVertical="@dimen/common_padding_16dp_default"
-                    android:paddingHorizontal="12dp"
-                    android:hint="@string/birthday_date"
-                    android:minWidth="120dp"
-                    android:inputType="none"
+                    android:clickable="true"
                     android:focusable="false"
-                    android:clickable="true"/>
+                    android:hint="@string/birthday_date"
+                    android:inputType="none"
+                    android:minWidth="120dp"
+                    android:minHeight="56dp"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="@dimen/common_padding_16dp_default" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilAddress"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:minHeight="56dp"
-                app:endIconMode="custom"
+                app:cornerRadius="@dimen/common_border_radius_8dp"
                 app:endIconDrawable="@drawable/ic_add_home"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:cornerRadius="@dimen/common_border_radius_8dp">
+                app:endIconMode="custom">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="56dp"
-                    android:paddingVertical="@dimen/common_padding_16dp_default"
-                    android:paddingHorizontal="12dp"
                     android:hint="@string/address"
-                    android:minWidth="120dp"
-                    android:inputType="textEmailAddress"
                     android:imeOptions="actionNext"
-                    android:nextFocusForward="@id/etPhoneNumber"/>
+                    android:inputType="textEmailAddress"
+                    android:minWidth="120dp"
+                    android:minHeight="56dp"
+                    android:nextFocusForward="@id/etPhoneNumber"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="@dimen/common_padding_16dp_default" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilPhoneNumber"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/common_padding_16dp_default"
                 android:minHeight="56dp"
-                app:endIconMode="custom"
+                app:cornerRadius="@dimen/common_border_radius_8dp"
                 app:endIconDrawable="@drawable/ic_local_phone"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:cornerRadius="@dimen/common_border_radius_8dp">
+                app:endIconMode="custom">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPhoneNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="56dp"
-                    android:paddingVertical="@dimen/common_padding_16dp_default"
-                    android:paddingHorizontal="12dp"
                     android:hint="@string/phone_number"
-                    android:minWidth="120dp"
-                    android:inputType="phone"
                     android:imeOptions="actionNext"
-                    android:nextFocusForward="@id/etHobbies"/>
+                    android:inputType="phone"
+                    android:minWidth="120dp"
+                    android:minHeight="56dp"
+                    android:nextFocusForward="@id/etHobbies"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="@dimen/common_padding_16dp_default" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilHobbies"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/common_padding_16dp_default"
                 android:minHeight="56dp"
-                app:endIconMode="custom"
-                app:endIconDrawable="@drawable/ic_hobbies"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:cornerRadius="@dimen/common_border_radius_8dp"
-                app:helperText="@string/optional"
                 app:counterEnabled="true"
-                app:counterMaxLength="@integer/hobbies_max_length">
+                app:counterMaxLength="@integer/hobbies_max_length"
+                app:endIconDrawable="@drawable/ic_hobbies"
+                app:endIconMode="custom"
+                app:helperText="@string/optional">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etHobbies"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="56dp"
-                    android:paddingVertical="@dimen/common_padding_16dp_default"
-                    android:paddingHorizontal="12dp"
                     android:hint="@string/hobbies"
-                    android:minWidth="120dp"
                     android:inputType="textMultiLine"
-                    android:maxLength="@integer/hobbies_max_length"/>
+                    android:maxLength="@integer/hobbies_max_length"
+                    android:minWidth="120dp"
+                    android:minHeight="56dp"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="@dimen/common_padding_16dp_default" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/registerButton"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/common_height_button_70dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="32dp"
-                android:backgroundTint="@color/green"
+                android:backgroundTint="@color/primary"
                 android:text="@string/add_people"
-                android:textColor="@color/black"
+                android:textColor="@color/on_primary"
                 android:textSize="18sp"
                 app:cornerRadius="6dp"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                app:strokeColor="@color/green"
-                app:strokeWidth="10dp"/>
+                app:strokeColor="@color/primary"
+                app:strokeWidth="10dp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

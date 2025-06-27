@@ -17,15 +17,16 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun peopleDao(): PeopleDao
 
     companion object {
-        val MIGRATION_1_2 = object : Migration(1, 2) {
-            override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("ALTER TABLE people ADD COLUMN image_path TEXT")
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE people ADD COLUMN image_path TEXT")
             }
         }
 
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
+        @Suppress("DEPRECATION")
         fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(

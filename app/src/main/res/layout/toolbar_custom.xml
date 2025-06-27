@@ -5,7 +5,7 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="@color/green"
+    android:background="@color/primary"
     android:elevation="4dp"
     app:titleTextColor="@android:color/white">
 
@@ -15,8 +15,8 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_arrow_back_ios"
         android:contentDescription="@string/back"
-        app:tint="@android:color/black"
-        android:background="@color/green"
+        app:tint="@color/on_primary"
+        android:background="@color/primary"
         android:visibility="visible"/>
 
     <TextView
