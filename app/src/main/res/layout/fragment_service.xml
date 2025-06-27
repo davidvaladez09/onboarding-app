@@ -60,7 +60,7 @@
                     android:layout_height="120dp"
                     android:src="@drawable/ic_engineering"
                     android:contentDescription="@string/empty_state_desc"
-                    app:tint="@color/gray_medium"/>
+                    app:tint="@color/on_surface"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -68,7 +68,7 @@
                     android:layout_marginTop="16dp"
                     android:text="@string/empty_state_text"
                     android:textSize="18sp"
-                    android:textColor="@color/gray_medium"
+                    android:textColor="@color/background"
                     android:textAlignment="center"/>
             </LinearLayout>
 

@@ -23,7 +23,7 @@
             android:contentDescription="@string/profile_image"
             android:src="@drawable/ic_insert_photo"
             app:shapeAppearanceOverlay="@style/CircleImageView"
-            app:strokeColor="@android:color/darker_gray"
+            app:strokeColor="@color/background"
             app:strokeWidth="1dp" />
 
         <LinearLayout
