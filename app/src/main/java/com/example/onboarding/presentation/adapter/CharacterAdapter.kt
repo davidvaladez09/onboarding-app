@@ -1,4 +1,3 @@
-// CharacterAdapter.kt
 package com.example.onboarding.presentation.adapter
 
 import android.view.LayoutInflater

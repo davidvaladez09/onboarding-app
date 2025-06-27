@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="16dp"
+    android:layout_margin="32dp"
     app:cardCornerRadius="16dp"
-    app:cardElevation="4dp"
+    app:cardElevation="8dp"
     app:cardBackgroundColor="?attr/colorSurfaceVariant">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance.RoundedCard"
-        android:background="@android:color/transparent">
+        android:clipToPadding="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:background="@color/green"
             android:orientation="horizontal"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:gravity="center_vertical"
-            android:background="@color/green">
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/tvNameDetail"
@@ -51,15 +50,14 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
+            android:background="?attr/colorSurfaceVariant"
             android:paddingBottom="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp"
-                android:background="@android:color/transparent">
+                android:padding="@dimen/common_padding_16dp_default">
 
                 <TextView
                     android:id="@+id/tvBirthDateDetail"
@@ -108,4 +106,4 @@
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
-</com.google.android.material.card.MaterialCardView>
+</androidx.cardview.widget.CardView>

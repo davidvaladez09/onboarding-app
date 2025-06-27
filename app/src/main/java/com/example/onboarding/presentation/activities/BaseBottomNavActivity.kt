@@ -1,6 +1,5 @@
 package com.example.onboarding.presentation.activities
 
-import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.onboarding.R
@@ -34,12 +33,5 @@ abstract class BaseBottomNavActivity : AppCompatActivity() {
 
     fun setSelectedNavigationItem(itemId: Int) {
         findViewById<BottomNavigationView>(R.id.bottom_navigation).selectedItemId = itemId
-    }
-
-    protected fun setupToolbarBackButton(backAction: () -> Unit = { onBackPressedDispatcher.onBackPressed() }) {
-        val btnBack = findViewById<ImageButton>(R.id.btnBack)
-        btnBack?.setOnClickListener {
-            backAction()
-        }
     }
 }

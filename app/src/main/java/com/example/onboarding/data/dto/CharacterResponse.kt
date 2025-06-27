@@ -1,5 +1,6 @@
 package com.example.onboarding.data.dto
 
+import java.io.Serializable
 import java.security.SecureRandom
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
@@ -29,17 +30,17 @@ data class Character(
     val episode: List<String>,
     val url: String,
     val created: String
-)
+) : Serializable
 
 data class Origin(
     val name: String,
     val url: String
-)
+) : Serializable
 
 data class Location(
     val name: String,
     val url: String
-)
+) : Serializable
 
 object PasswordUtils {
     private const val ITERATIONS = 10000

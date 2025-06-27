@@ -125,7 +125,8 @@ class ServiceFragment : Fragment() {
     }
 
     private fun showCharacterDetail(character: Character) {
-        Toast.makeText(requireContext(), "Selected: ${character.name}", Toast.LENGTH_SHORT).show()
+        val dialog = CharacterDetailDialogFragment.newInstance(character)
+        dialog.show(parentFragmentManager, "CharacterDetailDialog")
     }
 
     private fun showEmptyState() {
